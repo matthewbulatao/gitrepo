@@ -29,4 +29,6 @@ public class RoomRestController {
 		room.setCode("Test Room");
 		return this.roomService.saveOrUpdate(room);		
 	}
+	
+	//test
 }
