@@ -8,20 +8,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class Room implements Serializable {
+public class Role implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int id;
-	private String type;
-	private int number;
 	private String code;
-	private int capacity;
-	private double rate;
+	private String name;
 	private String description;
-	private String status;
-	
-	public Room() {}
 	
 	public int getId() {
 		return id;
@@ -29,35 +23,17 @@ public class Room implements Serializable {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public String getType() {
-		return type;
-	}
-	public void setType(String type) {
-		this.type = type;
-	}
-	public int getNumber() {
-		return number;
-	}
-	public void setNumber(int number) {
-		this.number = number;
-	}
 	public String getCode() {
 		return code;
 	}
 	public void setCode(String code) {
 		this.code = code;
 	}
-	public int getCapacity() {
-		return capacity;
+	public String getName() {
+		return name;
 	}
-	public void setCapacity(int capacity) {
-		this.capacity = capacity;
-	}
-	public double getRate() {
-		return rate;
-	}
-	public void setRate(double rate) {
-		this.rate = rate;
+	public void setName(String name) {
+		this.name = name;
 	}
 	public String getDescription() {
 		return description;
@@ -65,13 +41,6 @@ public class Room implements Serializable {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public String getStatus() {
-		return status;
-	}
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -79,7 +48,6 @@ public class Room implements Serializable {
 		result = prime * result + id;
 		return result;
 	}
-
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -88,15 +56,14 @@ public class Room implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Room other = (Room) obj;
+		Role other = (Role) obj;
 		if (id != other.id)
 			return false;
 		return true;
 	}
-
 	@Override
 	public String toString() {
-		return "Room [id=" + id + ", type=" + type + ", number=" + number + ", code=" + code + ", capacity=" + capacity
-				+ ", rate=" + rate + ", status=" + status + "]";
-	}
+		return "Role [id=" + id + ", code=" + code + ", name=" + name + "]";
+	}	
+	
 }

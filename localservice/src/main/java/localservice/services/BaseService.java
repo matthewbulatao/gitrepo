@@ -2,14 +2,9 @@ package localservice.services;
 
 import java.util.List;
 
-import javax.transaction.Transactional;
-
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Service;
 
-@Service
-@Transactional
-public class BaseService<T> {
+public abstract class BaseService<T> {
 	
 	private CrudRepository<T, Integer> repository;
 
@@ -19,6 +14,14 @@ public class BaseService<T> {
 	
 	public T saveOrUpdate(T model) {
 		return this.repository.save(model);
+	}
+	
+	public void delete(T model) {
+		this.repository.delete(model);
+	}
+	
+	public T findById(int id) {
+		return this.repository.findOne(id);
 	}
 	
 	public List<T> findAll(){
