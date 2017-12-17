@@ -1,0 +1,55 @@
+.mar-t-20 { margin-top: 20px; }
+.mar-t-50 { margin-top: 50px; }
+.mar-l-20 { margin-left: 20px; }
+.mar-l-5 { margin-left: 5px; }
+.mar-l-10 { margin-left: 10px; }
+.mar-r-5 { margin-right: 5px; }
+.mar-r-12 { margin-right: 12px; }
+.mar-r-15 { margin-right: 15px; }
+
+.wid-70 { width: 70%; }
+.wid-80 { width: 80%; }
+.wid-100 { width: 100%; }
+
+.checkin-panel {
+    background: #fff;
+    background: rgba(255,255,255,0.9);
+    white-space: nowrap;
+    border-radius: 2px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.checkin-panel-booking {
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.bc-separator {
+    font-size: 8pt;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+/* enable absolute positioning */
+.inner-addon { 
+    position: relative; 
+}
+
+/* style icon */
+.inner-addon .fa {
+  position: absolute;
+  padding: 10px;
+  cursor: pointer;
+}
+
+/* align icon */
+.left-addon .fa  { left:  0px;}
+.right-addon .fa { right: 15px;}
+.right-addon .fa-second { right: 35px;}
+
+/* add padding  */
+.left-addon input  { padding-left:  30px; }
+.right-addon input { padding-right: 30px; }
