@@ -6,10 +6,15 @@
 .mar-r-5 { margin-right: 5px; }
 .mar-r-12 { margin-right: 12px; }
 .mar-r-15 { margin-right: 15px; }
+.mar-r-20 { margin-right: 20px; }
 
 .wid-70 { width: 70%; }
 .wid-80 { width: 80%; }
 .wid-100 { width: 100%; }
+
+.invisible {
+    display: none;
+}
 
 .checkin-panel {
     background: #fff;
