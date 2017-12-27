@@ -13,8 +13,8 @@ public class Room implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int id;
+	private String name;
 	private String type;
-	private int number;
 	private String code;
 	private int capacity;
 	private double rate;
@@ -28,18 +28,18 @@ public class Room implements Serializable {
 	}
 	public void setId(int id) {
 		this.id = id;
+	}	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
 	}
 	public String getType() {
 		return type;
 	}
 	public void setType(String type) {
 		this.type = type;
-	}
-	public int getNumber() {
-		return number;
-	}
-	public void setNumber(int number) {
-		this.number = number;
 	}
 	public String getCode() {
 		return code;
@@ -96,7 +96,7 @@ public class Room implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Room [id=" + id + ", type=" + type + ", number=" + number + ", code=" + code + ", capacity=" + capacity
+		return "Room [id=" + id + ", name=" + name + ", type=" + type + ", code=" + code + ", capacity=" + capacity
 				+ ", rate=" + rate + ", status=" + status + "]";
-	}
+	}	
 }

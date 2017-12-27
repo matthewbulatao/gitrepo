@@ -1,3 +1,6 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri ="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -28,22 +31,22 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto" id="mainMenuNav">
-            <li class="nav-item" id="menu_home">
+            <li class="nav-item <c:if test="${CURRENT_MODULE == null || CURRENT_MODULE == ''}">active</c:if>" id="menu_home">
               <a class="nav-link" href="/">Home</a>
             </li>
-            <li class="nav-item" id="menu_booking">
-              <a class="nav-link" href="booking">Accommodation</a>
+            <li class="nav-item <c:if test="${CURRENT_MODULE == 'booking'}">active</c:if>" id="menu_booking">
+              <a class="nav-link" href="booking-step1">Accommodation</a>
             </li>
-            <li class="nav-item" id="menu_amenities">
+            <li class="nav-item <c:if test="${CURRENT_MODULE == 'amenities'}">active</c:if>" id="menu_amenities">
               <a class="nav-link" href="amenities">Amenities</a>
             </li>
-            <li class="nav-item" id="menu_gallery">
+            <li class="nav-item <c:if test="${CURRENT_MODULE == 'gallery'}">active</c:if>" id="menu_gallery">
               <a class="nav-link" href="gallery">Gallery</a>
             </li>
-            <li class="nav-item" id="menu_location">
+            <li class="nav-item <c:if test="${CURRENT_MODULE == 'location'}">active</c:if>" id="menu_location">
               <a class="nav-link" href="location">Location</a>
             </li>
-            <li class="nav-item" id="menu_contact">
+            <li class="nav-item <c:if test="${CURRENT_MODULE == 'contact'}">active</c:if>" id="menu_contact">
               <a class="nav-link" href="contact">Contact</a>
             </li>
           </ul>

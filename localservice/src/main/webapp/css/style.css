@@ -1,15 +1,22 @@
 .mar-t-20 { margin-top: 20px; }
 .mar-t-50 { margin-top: 50px; }
+.mar-t-100 { margin-top: 100px; }
 .mar-l-20 { margin-left: 20px; }
 .mar-l-5 { margin-left: 5px; }
 .mar-l-10 { margin-left: 10px; }
+.mar-l-60 { margin-left: 60px; }
 .mar-r-5 { margin-right: 5px; }
 .mar-r-12 { margin-right: 12px; }
 .mar-r-15 { margin-right: 15px; }
+.mar-r-20 { margin-right: 20px; }
 
 .wid-70 { width: 70%; }
 .wid-80 { width: 80%; }
 .wid-100 { width: 100%; }
+
+.invisible {
+    display: none;
+}
 
 .checkin-panel {
     background: #fff;
@@ -31,6 +38,36 @@
     font-size: 8pt;
     margin-left: 5px;
     margin-right: 5px;
+}
+
+.badge {
+    border: 1px solid #000;
+}
+
+.booking-summary-header {
+    font-size: 14pt;
+    font-weight: bold;
+}
+
+.booking-summary-field {
+    font-style: italic;
+    color: rgb(29, 117, 175);
+}
+
+#bookingRefNumber {
+    color: blue;
+    font-weight: bolder;
+    font-size: 20pt;    
+}
+
+#bookingStatus {
+    font-weight: bold;
+    font-size: 14pt;
+}
+
+.booking-tab-active {
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
 }
 
 /* enable absolute positioning */

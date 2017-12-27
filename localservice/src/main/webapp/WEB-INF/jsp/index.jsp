@@ -7,27 +7,27 @@
           <h2 class="display-4 text-white">Pavilion & Resort</h2>
         </div>
         <div class="container mar-t-50 wid-70 checkin-panel">
-          <form class="col-md-12 row">            
+          <form class="col-md-12 row" action="booking-step1" method="POST">            
             <div class="col-md-3 inner-addon right-addon">
               <i class="fa fa-calendar" aria-hidden="true"></i>
-              <input data-provide="datepicker" type="text" class="form-control" placeholder="Check-in" />              
+              <input data-provide="datepicker" type="text" class="form-control" placeholder="Check-in" name="checkIn" />              
             </div>   
             <div class="col-md-3 inner-addon right-addon">
               <i class="fa fa-calendar" aria-hidden="true"></i>
-              <input data-provide="datepicker" type="text" class="form-control" placeholder="Check-out" />              
+              <input data-provide="datepicker" type="text" class="form-control" placeholder="Check-out" name="checkOut" />              
             </div>         
             <div class="col-md-2 inner-addon right-addon">
               <i class="fa fa-plus-circle fa-second" aria-hidden="true"></i>
               <i class="fa fa-minus-circle" aria-hidden="true"></i>
-              <input type="text" class="form-control" placeholder="Adult" />              
+              <input type="text" class="form-control" placeholder="Adult" name="countAdult" />              
             </div>
             <div class="col-md-2 inner-addon right-addon">
               <i class="fa fa-plus-circle fa-second" aria-hidden="true"></i>
               <i class="fa fa-minus-circle" aria-hidden="true"></i>
-              <input type="text" class="form-control" placeholder="Child" />              
+              <input type="text" class="form-control" placeholder="Child" name="countChildren" />              
             </div>
             <div class="col-md-2">
-              <button class="btn btn-primary">Search Rooms<i class="fa fa-search mar-l-5" aria-hidden="true"></i></button>
+              <button class="btn btn-primary" type="submit">Search Rooms<i class="fa fa-search mar-l-5" aria-hidden="true"></i></button>
             </div>
           </form>
         </div>
