@@ -9,22 +9,22 @@
         <div class="container mar-t-50 wid-70 checkin-panel">
           <form class="col-md-12 row" action="booking-step1" method="POST">            
             <div class="col-md-3 inner-addon right-addon">
-              <i class="fa fa-calendar" aria-hidden="true"></i>
-              <input data-provide="datepicker" type="text" class="form-control" placeholder="Check-in" name="checkIn" />              
+              <i class="fa fa-calendar icon-calendar" aria-hidden="true"></i>
+              <input data-provide="datepicker" data-date-format="m/d/yyyy" type="text" class="form-control" placeholder="Check-in" name="checkIn" />              
             </div>   
             <div class="col-md-3 inner-addon right-addon">
-              <i class="fa fa-calendar" aria-hidden="true"></i>
-              <input data-provide="datepicker" type="text" class="form-control" placeholder="Check-out" name="checkOut" />              
+              <i class="fa fa-calendar icon-calendar" aria-hidden="true"></i>
+              <input data-provide="datepicker" data-date-format="m/d/yyyy" type="text" class="form-control" placeholder="Check-out" name="checkOut" />              
             </div>         
             <div class="col-md-2 inner-addon right-addon">
-              <i class="fa fa-plus-circle fa-second" aria-hidden="true"></i>
-              <i class="fa fa-minus-circle" aria-hidden="true"></i>
-              <input type="text" class="form-control" placeholder="Adult" name="countAdult" />              
+              <i class="fa fa-plus-circle fa-second" aria-hidden="true" id="iconMath_add_Adult"></i>
+              <i class="fa fa-minus-circle" aria-hidden="true" id="iconMath_minus_Adult"></i>
+              <input type="text" class="form-control input-numeric" placeholder="Adult" name="countAdult" />              
             </div>
             <div class="col-md-2 inner-addon right-addon">
-              <i class="fa fa-plus-circle fa-second" aria-hidden="true"></i>
-              <i class="fa fa-minus-circle" aria-hidden="true"></i>
-              <input type="text" class="form-control" placeholder="Child" name="countChildren" />              
+              <i class="fa fa-plus-circle fa-second" aria-hidden="true" id="iconMath_add_Children"></i>
+              <i class="fa fa-minus-circle" aria-hidden="true" id="iconMath_minus_Children"></i>
+              <input type="text" class="form-control input-numeric" placeholder="Child" name="countChildren" />              
             </div>
             <div class="col-md-2">
               <button class="btn btn-primary" type="submit">Search Rooms<i class="fa fa-search mar-l-5" aria-hidden="true"></i></button>

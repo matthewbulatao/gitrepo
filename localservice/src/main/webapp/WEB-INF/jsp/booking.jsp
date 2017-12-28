@@ -4,23 +4,23 @@
   <div class="container checkin-panel-booking">
     <form class="row">            
       <div class="col-md-3 inner-addon right-addon">
-        <i class="fa fa-calendar" aria-hidden="true"></i>
+        <i class="fa fa-calendar icon-calendar" aria-hidden="true"></i>
         <input data-provide="datepicker" type="text" class="form-control" placeholder="Check-in" value="<fmt:formatDate pattern="M/d/yyyy" value="${sessionScope.reservationDraft.checkIn}"/>" />              
       </div>   
       <div class="col-md-3 inner-addon right-addon">
-        <i class="fa fa-calendar" aria-hidden="true"></i>
+        <i class="fa fa-calendar icon-calendar" aria-hidden="true"></i>
         <input data-provide="datepicker" type="text" class="form-control" placeholder="Check-out" value="<fmt:formatDate pattern="M/d/yyyy" value="${sessionScope.reservationDraft.checkOut}"/>" />              
       </div>         
       <div class="col-md-3 inner-addon right-addon">
-        <i class="fa fa-plus-circle fa-second" aria-hidden="true"></i>
-        <i class="fa fa-minus-circle" aria-hidden="true"></i>
-        <input type="text" class="form-control" placeholder="Adult" value="${sessionScope.reservationDraft.countAdult}" />              
+        <i class="fa fa-plus-circle fa-second" aria-hidden="true" id="iconMath_add_Adult"></i>
+        <i class="fa fa-minus-circle" aria-hidden="true" id="iconMath_minus_Adult"></i>
+        <input type="text" class="form-control input-numeric" placeholder="Adult" name="countAdult" value="${sessionScope.reservationDraft.countAdult}" />              
       </div>
       <div class="col-md-3 inner-addon right-addon">
-        <i class="fa fa-plus-circle fa-second" aria-hidden="true"></i>
-        <i class="fa fa-minus-circle" aria-hidden="true"></i>
-        <input type="text" class="form-control" placeholder="Child" value="${sessionScope.reservationDraft.countChildren}" />              
-      </div>          
+        <i class="fa fa-plus-circle fa-second" aria-hidden="true" id="iconMath_add_Children"></i>
+        <i class="fa fa-minus-circle" aria-hidden="true" id="iconMath_minus_Children"></i>
+        <input type="text" class="form-control input-numeric" placeholder="Child" name="countChildren" value="${sessionScope.reservationDraft.countChildren}" />              
+      </div>        
     </form>
   </div>
 
@@ -42,12 +42,13 @@
             </div>
             <div class="media-body mar-l-20">
               <h4 class="media-heading">${room.name}</h4>
+              <p>${room.type}</p>
               <p>${room.description}</p>
               <a href="#">See more details...</a>
             </div>
             <div class="media-right mar-l-20">
               <h4>&#8369; <fmt:formatNumber type="number" pattern="#,###" value="${room.rate}" /></h4>
-              <button class="btn btn-primary">Select Room</button>
+              <label class="form-check-label"><input type="checkbox" class="form-check-input big-checkbox" />&nbsp;Select Room</label>
             </div>
           </div>
         </div>
@@ -161,7 +162,7 @@
           </table>
         </div>
         <div class="mar-t-20">
-          <span class="booking-summary-header">Rooms and Services</span>
+          <span class="booking-summary-header">Reserved Room(s)</span>
           <table class="table table-responsive">
             <tr>
                 <td>Room Name</td>

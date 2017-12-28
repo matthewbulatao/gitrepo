@@ -70,6 +70,12 @@
     box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
 }
 
+.big-checkbox {
+	width: 20px;
+	height: 20px;
+	margin-top: 2px;
+}
+
 /* enable absolute positioning */
 .inner-addon { 
     position: relative; 
