@@ -34,6 +34,13 @@
     padding-bottom: 15px;
 }
 
+.generic-panel {
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
 .bc-separator {
     font-size: 8pt;
     margin-left: 5px;
@@ -63,6 +70,10 @@
 #bookingStatus {
     font-weight: bold;
     font-size: 14pt;
+}
+
+#myCarousel {
+	width: 60%;	
 }
 
 .booking-tab-active {

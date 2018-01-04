@@ -18,13 +18,32 @@ public class HomeController {
 		return "index";
 	}
 	
-	@GetMapping("/{page}-{subModule}")
-	public String navigateToPage(@PathVariable("page") String page, @PathVariable("subModule") String subModule, HttpServletRequest request) {
+	@GetMapping("/amenities")
+	public String amenities(HttpServletRequest request) {
+		String page = "amenities";
 		request.getSession().setAttribute(Consts.CURRENT_MODULE, page);
-		request.getSession().setAttribute(Consts.CURRENT_SUBMODULE, subModule);		
 		return page;
 	}
 	
+	@GetMapping("/gallery")
+	public String gallery(HttpServletRequest request) {
+		String page = "gallery";
+		request.getSession().setAttribute(Consts.CURRENT_MODULE, page);
+		return page;
+	}
 	
+	@GetMapping("/location")
+	public String location(HttpServletRequest request) {
+		String page = "location";
+		request.getSession().setAttribute(Consts.CURRENT_MODULE, page);
+		return page;
+	}
+	
+	@GetMapping("/contact")
+	public String contact(HttpServletRequest request) {
+		String page = "contact";
+		request.getSession().setAttribute(Consts.CURRENT_MODULE, page);
+		return page;
+	}
 	
 }

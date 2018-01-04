@@ -1,7 +1,8 @@
 <!-- Footer -->
     <footer class="py-5 bg-dark mar-t-50">
       <div class="container">
-        <p class="m-0 text-center text-white">Copyright &copy; Casa Elum Pavilion & Resort</p>
+        <jsp:useBean id="date" class="java.util.Date" />
+        <p class="m-0 text-center text-white">Copyright <fmt:formatDate value="${date}" pattern="yyyy" /> &copy; Casa Elum Pavilion & Resort</p>
       </div>      
     </footer>
 
