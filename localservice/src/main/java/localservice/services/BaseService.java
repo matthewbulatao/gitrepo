@@ -24,6 +24,10 @@ public abstract class BaseService<T> {
 		return this.repository.findOne(id);
 	}
 	
+	public List<T> findByIds(List<Integer> ids){
+		return (List<T>) this.repository.findAll(ids);
+	}
+	
 	public List<T> findAll(){
 		return (List<T>) this.repository.findAll();
 	}

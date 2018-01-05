@@ -3,14 +3,18 @@ package localservice.controllers;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import localservice.models.Consts;
+import localservice.services.MiscellaneousService;
 
 @Controller
 public class HomeController {
+	
+	@Autowired
+	private MiscellaneousService miscellaneousService;
 	
 	@GetMapping("/")
 	public String home(HttpServletRequest request) {
@@ -22,6 +26,7 @@ public class HomeController {
 	public String amenities(HttpServletRequest request) {
 		String page = "amenities";
 		request.getSession().setAttribute(Consts.CURRENT_MODULE, page);
+		request.setAttribute("miscellaneousList", miscellaneousService.findAll());
 		return page;
 	}
 	

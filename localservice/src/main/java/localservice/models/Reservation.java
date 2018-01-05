@@ -28,10 +28,24 @@ public class Reservation implements Serializable {
 	private int countChildren;
 	private String status;	
 	private String remarks;
+	private double totalAmount;
+	
+	@Transient
+	private String[] selectedRoomIds;
 	@Transient
 	private List<Room> rooms;
 	@Transient
-	private List<AdditionalCharge> additionalCharges;
+	private List<Miscellaneous> miscellaneousList;
+	@Transient
+	private String firstName;
+	@Transient
+	private String lastName;
+	@Transient
+	private String contactNumber;
+	@Transient
+	private String email;
+	@Transient
+	private String paymentMethod;
 	@Transient
 	private Guest mainGuest;
 	
@@ -89,19 +103,60 @@ public class Reservation implements Serializable {
 	public void setRemarks(String remarks) {
 		this.remarks = remarks;
 	}
+	public double getTotalAmount() {
+		return totalAmount;
+	}
+	public void setTotalAmount(double totalAmount) {
+		this.totalAmount = totalAmount;
+	}
+	public String[] getSelectedRoomIds() {
+		return selectedRoomIds;
+	}
+	public void setSelectedRoomIds(String[] selectedRoomIds) {
+		this.selectedRoomIds = selectedRoomIds;
+	}
 	public List<Room> getRooms() {
 		return rooms;
 	}
 	public void setRooms(List<Room> rooms) {
 		this.rooms = rooms;
 	}
-	public List<AdditionalCharge> getAdditionalCharges() {
-		return additionalCharges;
+	public List<Miscellaneous> getMiscellaneousList() {
+		return miscellaneousList;
 	}
-	public void setAdditionalCharges(List<AdditionalCharge> additionalCharges) {
-		this.additionalCharges = additionalCharges;
+	public void setMiscellaneousList(List<Miscellaneous> miscellaneousList) {
+		this.miscellaneousList = miscellaneousList;
+	}	
+	public String getFirstName() {
+		return firstName;
 	}
-	
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+	public String getLastName() {
+		return lastName;
+	}
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+	public String getContactNumber() {
+		return contactNumber;
+	}
+	public void setContactNumber(String contactNumber) {
+		this.contactNumber = contactNumber;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public String getPaymentMethod() {
+		return paymentMethod;
+	}
+	public void setPaymentMethod(String paymentMethod) {
+		this.paymentMethod = paymentMethod;
+	}
 	public Guest getMainGuest() {
 		return mainGuest;
 	}
