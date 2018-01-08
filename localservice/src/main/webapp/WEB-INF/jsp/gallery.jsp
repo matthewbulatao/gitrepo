@@ -1,6 +1,6 @@
 <%@include file="header.jsp" %>
       
-  <div class="container generic-panel mar-t-20">
+  <div class="container generic-panel mar-t-20 pad-b-30">
     <h4>Our Gallery</h4>
     <center>
       <div id="myCarousel" class="carousel slide" data-ride="carousel">

@@ -9,6 +9,7 @@
 .mar-r-12 { margin-right: 12px; }
 .mar-r-15 { margin-right: 15px; }
 .mar-r-20 { margin-right: 20px; }
+.pad-b-30 { padding-bottom: 30px !important; }
 
 .wid-70 { width: 70%; }
 .wid-80 { width: 80%; }
@@ -70,6 +71,10 @@
 #bookingStatus {
     font-weight: bold;
     font-size: 14pt;
+}
+
+#bookingTotal {
+	margin-right: 5px;
 }
 
 #myCarousel {

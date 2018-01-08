@@ -115,13 +115,11 @@
             <div class="col-md-5">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
             </div>
-          </div>   
-          <div class="form-group row">
-            <div class="col-md-12">
-              <button type="submit" class="btn btn-primary pull-right mar-r-20">Proceed to Confirmation <i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
-            </div>
-          </div>    
+          </div>
         </div>
+      </div>
+      <div class="col-md-12" style="margin-bottom:80px;">
+        <button type="submit" class="btn btn-primary pull-right mar-t-20" style="margin-right:-15px;">Proceed to Confirmation <i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
       </div>
     </form>    
   </div>
@@ -183,10 +181,10 @@
             </c:forEach>                             
           </table>
         </div>
-      </div> 
-      <div class="col-md-12">
-        <button class="btn btn-primary pull-right" style="margin-top:-50px;margin-right:-10px;">Print Confirmation <i class="fa fa-print" aria-hidden="true"></i></button>
       </div>
+    </div>
+    <div class="col-md-12" style="margin-bottom:80px;">
+      <button class="btn btn-primary pull-right mar-t-20" style="margin-right:-15px;">Print Confirmation <i class="fa fa-print" aria-hidden="true"></i></button>
     </div>
   </div>
   

@@ -1,6 +1,6 @@
 <%@include file="header.jsp" %>
 
-  <div class="container generic-panel mar-t-50">
+  <div class="container generic-panel mar-t-20 pad-b-30">
     <h4>Contact Us</h4>
     <form action="" class="form-horizontal mar-t-20">
       <div class="form-group row">
