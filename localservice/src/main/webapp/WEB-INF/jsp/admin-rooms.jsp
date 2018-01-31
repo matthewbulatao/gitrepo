@@ -10,10 +10,10 @@
         <h5 class="mb-0">Manage</h5>
       </div>
 
-      <div id="collapseOne" class="collapse" role="tabpanel"
+      <div id="collapseOne" class="collapse <c:if test="${room.id > 0}">show</c:if>" role="tabpanel"
         aria-labelledby="headingOne" data-parent="#accordion">
         <div class="card-body">
-          <form action="${pageContext.request.contextPath}/admin/rooms/save" class="form-horizontal mar-t-20" method="POST">
+          <form action="admin-rooms-save" class="form-horizontal mar-t-20" method="POST">
             <input type="hidden" name="id" value="${room.id}">
             <div class="form-group row">
               <label class="form-label col-md-2">*Name</label>
@@ -25,9 +25,9 @@
               <label class="form-label col-md-2">*Type</label>
               <div class="col-md-5">
                 <select class="form-control" name="type" value="${room.type}">
-                  <option value="STANDARD">Standard</option>
-                  <option value="DELUXE">Deluxe</option>
-                  <option value="SUITE">Suite</option>
+                  <option value="STANDARD" <c:if test="${room.type == 'STANDARD'}">selected</c:if>>Standard</option>
+                  <option value="DELUXE" <c:if test="${room.type == 'DELUXE'}">selected</c:if>>Deluxe</option>
+                  <option value="SUITE" <c:if test="${room.type == 'SUITE'}">selected</c:if>>Suite</option>
                 </select>
               </div>
             </div>
@@ -36,7 +36,7 @@
               <div class="col-md-5">
                 <select class="form-control" name="capacity" value="${room.capacity}">
                   <c:forEach var="i" begin="1" end="20">
-                    <option value="${i}">${i}</option>
+                    <option value="${i}" <c:if test="${room.capacity == i}">selected</c:if>>${i}</option>
                   </c:forEach>                  
                 </select>
               </div>
@@ -57,8 +57,8 @@
               <label class="form-label col-md-2">*Status</label>
               <div class="col-md-5">
                 <select class="form-control" name="status" value="${room.status}">
-                  <option value="A">Active</option>
-                  <option value="I">Inactive</option>
+                  <option value="A" <c:if test="${room.status == 'A'}">selected</c:if>>Active</option>
+                  <option value="I" <c:if test="${room.status == 'I'}">selected</c:if>>Inactive</option>
                 </select>
               </div>
             </div>                
@@ -78,7 +78,7 @@
         data-parent="#accordion">
         <h5 class="mb-0">List</h5>
       </div>
-      <div id="collapseTwo" class="collapse show" role="tabpanel"
+      <div id="collapseTwo" class="collapse <c:if test="${room == null}">show</c:if>" role="tabpanel"
         aria-labelledby="headingTwo" data-parent="#accordion">        
         <div class="card-body">
           <table class="table table-striped">
@@ -103,10 +103,12 @@
                   <td>&#8369; <fmt:formatNumber type="number" pattern="#,###.##" value="${room.rate}" /></td>
                   <td>${room.status}</td>   
                   <td>
-                    <div class="text-center">
-                      <a href="#" class="pad-r-10" title="View"><i class="fa fa-search" aria-hidden="true"></i></a>
-                      <a href="#" class="pad-r-10" title="Edit"><i class="fa fa-pencil" aria-hidden="true"></i></a>
-                      <a href="#" title="Delete"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                    <div class="text-center row">
+                      <a href="admin-rooms-edit?code=${room.code}" class="pad-r-10" title="Edit"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                      <form action="admin-rooms-delete" method="POST">
+                        <input type="hidden" name="code" value="${room.code}" />
+                        <a href="#" title="Delete" class="delete-room-icon"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                      </form>                      
                     </div>                    
                   </td>               
                 </tr>

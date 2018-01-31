@@ -10,11 +10,11 @@
           <form class="col-md-12 row" action="booking-step1" method="POST">            
             <div class="col-md-3 inner-addon right-addon">
               <i class="fa fa-calendar icon-calendar" aria-hidden="true"></i>
-              <input data-provide="datepicker" data-date-format="m/d/yyyy" type="text" class="form-control" placeholder="Check-in" name="checkIn" />              
+              <input type="text" class="form-control datepicker" placeholder="Check-in" name="checkIn" />              
             </div>   
             <div class="col-md-3 inner-addon right-addon">
               <i class="fa fa-calendar icon-calendar" aria-hidden="true"></i>
-              <input data-provide="datepicker" data-date-format="m/d/yyyy" type="text" class="form-control" placeholder="Check-out" name="checkOut" />              
+              <input type="text" class="form-control datepicker" placeholder="Check-out" name="checkOut" />              
             </div>         
             <div class="col-md-2 inner-addon right-addon">
               <i class="fa fa-plus-circle fa-second" aria-hidden="true" id="iconMath_add_Adult"></i>

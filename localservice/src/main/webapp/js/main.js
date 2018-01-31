@@ -8,5 +8,15 @@ $(document).ready(function() {
     	let value = parseInt($('input[name=count'+type+']').val());
     	$('input[name=count'+type+']').val(value>0 ? (operation == 'add' ? value+1 : value-1) : (operation == 'add' ? 1 : 0));
     });
+    $('.delete-room-icon').click(function(){
+    	if(confirm("Are you sure to delete?")){
+    		$(this).closest('form').submit();
+    	}
+    });    
+    $('input.datepicker').datepicker({
+    	format: 'm/d/yyyy',
+    	startDate: new Date()
+    });
+    
     $('div#myCarousel').carousel();
 });

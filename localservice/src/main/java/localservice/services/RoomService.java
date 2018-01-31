@@ -36,4 +36,8 @@ public class RoomService extends BaseService<Room> {
 		return code;
 	}
 	
+	public Room findByCode(String code) {
+		return this.roomRepository.findOneByCode(code);
+	}
+	
 }

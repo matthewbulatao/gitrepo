@@ -5,11 +5,11 @@
     <form class="row">            
       <div class="col-md-3 inner-addon right-addon">
         <i class="fa fa-calendar icon-calendar" aria-hidden="true"></i>
-        <input data-provide="datepicker" type="text" class="form-control" placeholder="Check-in" value="<fmt:formatDate pattern="M/d/yyyy" value="${sessionScope.reservationDraft.checkIn}"/>" />              
+        <input type="text" class="form-control datepicker" placeholder="Check-in" value="<fmt:formatDate pattern="M/d/yyyy" value="${sessionScope.reservationDraft.checkIn}"/>" />              
       </div>   
       <div class="col-md-3 inner-addon right-addon">
         <i class="fa fa-calendar icon-calendar" aria-hidden="true"></i>
-        <input data-provide="datepicker" type="text" class="form-control" placeholder="Check-out" value="<fmt:formatDate pattern="M/d/yyyy" value="${sessionScope.reservationDraft.checkOut}"/>" />              
+        <input type="text" class="form-control datepicker" placeholder="Check-out" value="<fmt:formatDate pattern="M/d/yyyy" value="${sessionScope.reservationDraft.checkOut}"/>" />              
       </div>         
       <div class="col-md-3 inner-addon right-addon">
         <i class="fa fa-plus-circle fa-second" aria-hidden="true" id="iconMath_add_Adult"></i>

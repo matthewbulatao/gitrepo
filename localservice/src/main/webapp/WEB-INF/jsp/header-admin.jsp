@@ -36,19 +36,19 @@
               <a class="nav-link" href="admin">Dashboard</a>
             </li>
             <li class="nav-item <c:if test="${CURRENT_MODULE == 'admin_reservations'}">active</c:if>">
-              <a class="nav-link" href="admin/reservations">Reservations</a>
+              <a class="nav-link" href="admin-reservations">Reservations</a>
             </li>
             <li class="nav-item <c:if test="${CURRENT_MODULE == 'admin_rooms'}">active</c:if>">
-              <a class="nav-link" href="admin/rooms">Rooms</a>
+              <a class="nav-link" href="admin-rooms">Rooms</a>
             </li>
             <li class="nav-item <c:if test="${CURRENT_MODULE == 'admin_amenities'}">active</c:if>">
-              <a class="nav-link" href="admin/amenities">Amenities</a>
+              <a class="nav-link" href="admin-amenities">Amenities</a>
             </li>
             <li class="nav-item <c:if test="${CURRENT_MODULE == 'admin_profiles'}">active</c:if>">
-              <a class="nav-link" href="admin/profiles">Profiles</a>
+              <a class="nav-link" href="admin-profiles">Profiles</a>
             </li>
             <li class="nav-item <c:if test="${CURRENT_MODULE == 'admin_reports'}">active</c:if>">
-              <a class="nav-link" href="admin/reports">Reports</a>
+              <a class="nav-link" href="admin-reports">Reports</a>
             </li>
           </ul>
         </div>

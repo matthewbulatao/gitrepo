@@ -23,7 +23,7 @@ import localservice.services.ReservationService;
 import localservice.services.RoomService;
 
 @Controller
-public class BookingController {
+public class BookingController extends BaseController {
 	
 	@Autowired
 	private RoomService roomService;
@@ -86,8 +86,5 @@ public class BookingController {
 		request.setAttribute("availableRooms", rooms);
 	}
 	
-	private void setModuleInSession(HttpServletRequest request, String module, String submodule) {
-		request.getSession().setAttribute(Consts.CURRENT_MODULE, module);
-		request.getSession().setAttribute(Consts.CURRENT_SUBMODULE, submodule);
-	}
+	
 }

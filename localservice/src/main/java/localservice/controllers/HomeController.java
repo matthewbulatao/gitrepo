@@ -11,21 +11,21 @@ import localservice.models.Consts;
 import localservice.services.MiscellaneousService;
 
 @Controller
-public class HomeController {
+public class HomeController extends BaseController {
 	
 	@Autowired
 	private MiscellaneousService miscellaneousService;
 	
 	@GetMapping("/")
 	public String home(HttpServletRequest request) {
-		request.getSession().setAttribute(Consts.CURRENT_MODULE, StringUtils.EMPTY);
+		setModuleInSession(request, StringUtils.EMPTY, null);
 		return "index";
 	}
 	
 	@GetMapping("/amenities")
 	public String amenities(HttpServletRequest request) {
 		String page = "amenities";
-		request.getSession().setAttribute(Consts.CURRENT_MODULE, page);
+		setModuleInSession(request, page, null);
 		request.setAttribute("miscellaneousList", miscellaneousService.findAll());
 		return page;
 	}
@@ -33,21 +33,21 @@ public class HomeController {
 	@GetMapping("/gallery")
 	public String gallery(HttpServletRequest request) {
 		String page = "gallery";
-		request.getSession().setAttribute(Consts.CURRENT_MODULE, page);
+		setModuleInSession(request, page, null);
 		return page;
 	}
 	
 	@GetMapping("/location")
 	public String location(HttpServletRequest request) {
 		String page = "location";
-		request.getSession().setAttribute(Consts.CURRENT_MODULE, page);
+		setModuleInSession(request, page, null);
 		return page;
 	}
 	
 	@GetMapping("/contact")
 	public String contact(HttpServletRequest request) {
 		String page = "contact";
-		request.getSession().setAttribute(Consts.CURRENT_MODULE, page);
+		setModuleInSession(request, page, null);
 		return page;
 	}
 	
