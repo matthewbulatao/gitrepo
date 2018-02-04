@@ -1,11 +1,14 @@
 package localservice.models;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 public class ApplicationProperties implements Serializable {
@@ -17,6 +20,8 @@ public class ApplicationProperties implements Serializable {
 	private int maxChildrenPerBooking;
 	private double entranceFeeAdult;
 	private double entranceFeeChild;
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date changeDate;
 	
 	public int getMaxAdultPerBooking() {
 		return maxAdultPerBooking;
@@ -41,6 +46,24 @@ public class ApplicationProperties implements Serializable {
 	}
 	public void setEntranceFeeChild(double entranceFeeChild) {
 		this.entranceFeeChild = entranceFeeChild;
-	}	
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public Date getChangeDate() {
+		return changeDate;
+	}
+	public void setChangeDate(Date changeDate) {
+		this.changeDate = changeDate;
+	}
 	
+	@Override
+	public String toString() {
+		return "ApplicationProperties [id=" + id + ", maxAdultPerBooking=" + maxAdultPerBooking
+				+ ", maxChildrenPerBooking=" + maxChildrenPerBooking + ", entranceFeeAdult=" + entranceFeeAdult
+				+ ", entranceFeeChild=" + entranceFeeChild + ", changeDate=" + changeDate + "]";
+	}
 }

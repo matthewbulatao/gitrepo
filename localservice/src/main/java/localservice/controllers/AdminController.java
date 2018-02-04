@@ -10,9 +10,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import localservice.models.ApplicationProperties;
 import localservice.models.Miscellaneous;
 import localservice.models.Room;
 import localservice.models.RoomType;
+import localservice.services.ApplicationPropertiesService;
 import localservice.services.MiscellaneousService;
 import localservice.services.RoomService;
 import localservice.services.RoomTypeService;
@@ -26,6 +28,8 @@ public class AdminController extends BaseController {
 	private RoomTypeService roomTypeService;
 	@Autowired
 	private MiscellaneousService miscellaneousService;
+	@Autowired
+	private ApplicationPropertiesService applicationPropertiesService;
 	
 	@GetMapping("/admin")
 	public String adminHome() {
@@ -123,5 +127,19 @@ public class AdminController extends BaseController {
 		request.setAttribute("miscellaneousList", miscellaneousService.findAll());
 		return "redirect:admin-amenities";
 	}	
+	
+	@GetMapping("/admin-config")
+	public String adminConfig(HttpServletRequest request) {
+		request.setAttribute("config", applicationPropertiesService.findLatestConfig());
+		setModuleInSession(request, "admin_config", null);
+		return "admin-config";
+	}
+	
+	@PostMapping("/admin-config-save")
+	public String adminConfig(@ModelAttribute ApplicationProperties applicationPropertiesForm, BindingResult bindingResult, HttpServletRequest request) {
+		applicationPropertiesService.saveOrUpdate(applicationPropertiesForm);
+		request.setAttribute("config", applicationPropertiesService.findLatestConfig());
+		return "admin-config";
+	}
 	
 }

@@ -51,6 +51,9 @@
             <li class="nav-item <c:if test="${CURRENT_MODULE == 'admin_reports'}">active</c:if>">
               <a class="nav-link" href="admin-reports">Reports</a>
             </li>
+            <li class="nav-item <c:if test="${CURRENT_MODULE == 'admin_config'}">active</c:if>">
+              <a class="nav-link" href="admin-config">Config</a>
+            </li>
           </ul>
         </div>
       </div>
