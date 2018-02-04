@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import localservice.models.Consts;
 import localservice.models.Guest;
 import localservice.models.Reservation;
 import localservice.models.Room;

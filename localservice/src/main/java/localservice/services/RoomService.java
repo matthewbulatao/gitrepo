@@ -38,6 +38,6 @@ public class RoomService extends BaseService<Room> {
 	
 	public Room findByCode(String code) {
 		return this.roomRepository.findOneByCode(code);
-	}
+	}	
 	
 }

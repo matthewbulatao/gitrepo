@@ -1,7 +1,7 @@
 <%@include file="header-admin.jsp"%>
 
 <div class="container mar-t-20">
-  <h4>Rooms Management</h4>
+  <h4>Rooms Management | <a href="admin-room-types">Room Types <i class="fa fa-cog" aria-hidden="true"></i></a></h4>  
   <div id="accordion" role="tablist">
     <div class="card">
       <div class="card-header" role="tab" id="headingOne"
@@ -25,9 +25,9 @@
               <label class="form-label col-md-2">*Type</label>
               <div class="col-md-5">
                 <select class="form-control" name="type" value="${room.type}">
-                  <option value="STANDARD" <c:if test="${room.type == 'STANDARD'}">selected</c:if>>Standard</option>
-                  <option value="DELUXE" <c:if test="${room.type == 'DELUXE'}">selected</c:if>>Deluxe</option>
-                  <option value="SUITE" <c:if test="${room.type == 'SUITE'}">selected</c:if>>Suite</option>
+                  <c:forEach var="roomType" items="${roomTypeList}">
+                    <option value="${roomType.name}" <c:if test="${room.type == roomType.name}">selected</c:if>>${roomType.name}</option>
+                  </c:forEach>
                 </select>
               </div>
             </div>
@@ -64,7 +64,7 @@
             </div>                
             <div class="form-group row">
               <div class="col-md-7">
-                <button href="#" class="btn btn-default pull-right mar-l-10">Clear <i class="fa fa-eraser" aria-hidden="true"></i></button>
+                <button href="admin-rooms" class="btn btn-default pull-right mar-l-10">Cancel <i class="fa fa-eraser" aria-hidden="true"></i></button>
                 <button type="submit" class="btn btn-primary pull-right">Save <i class="fa fa-floppy-o" aria-hidden="true"></i></button>                
               </div>
             </div>      
@@ -107,7 +107,7 @@
                       <a href="admin-rooms-edit?code=${room.code}" class="pad-r-10" title="Edit"><i class="fa fa-pencil" aria-hidden="true"></i></a>
                       <form action="admin-rooms-delete" method="POST">
                         <input type="hidden" name="code" value="${room.code}" />
-                        <a href="#" title="Delete" class="delete-room-icon"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                        <a href="#" title="Delete" class="delete-icon"><i class="fa fa-trash" aria-hidden="true"></i></a>
                       </form>                      
                     </div>                    
                   </td>               

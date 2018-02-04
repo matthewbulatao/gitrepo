@@ -6,4 +6,5 @@ import localservice.models.Miscellaneous;
 
 public interface MiscellaneousRepository extends CrudRepository<Miscellaneous, Integer>{
 
+	public Miscellaneous findByCode(String code);
 }
