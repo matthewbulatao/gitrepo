@@ -17,6 +17,7 @@
 	<link href="../../css/bootstrap-datepicker3.css" rel="stylesheet">
     <link href="../../css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <link href="../../css/sb-admin-2.css" rel="stylesheet">
+    <link href="../../css/excel-bootstrap-table-filter-style.css" rel="stylesheet">
     <link href="../../css/style.css" rel="stylesheet">
 
   </head>

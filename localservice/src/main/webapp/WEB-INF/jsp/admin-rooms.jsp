@@ -84,13 +84,13 @@
           <table class="table table-striped">
             <thead>
               <tr>
-                <th>Code</th>
-                <th>Name</th>
-                <th>Type</th>
-                <th>Capacity</th>
-                <th>Rate</th>
-                <th>Status</th>              
-                <th>&nbsp;</th> 
+                <th class="apply-filter">Code</th>
+                <th class="apply-filter">Name</th>
+                <th class="apply-filter">Type</th>
+                <th class="apply-filter">Capacity</th>
+                <th class="apply-filter">Rate</th>
+                <th class="apply-filter">Status</th>
+                <th>&nbsp;</th>
               </tr>
             </thead>
             <tbody>

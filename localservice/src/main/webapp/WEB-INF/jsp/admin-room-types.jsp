@@ -15,8 +15,8 @@
     <table class="table table-striped">
       <thead>
         <tr>
-          <th>Name</th>
-          <th>&nbsp;</th> 
+          <th class="apply-filter">Name</th>    
+          <th>&nbsp;</th>      
         </tr>
       </thead>
       <tbody>

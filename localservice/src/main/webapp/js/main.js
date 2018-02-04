@@ -19,4 +19,8 @@ $(document).ready(function() {
     });
     
     $('div#myCarousel').carousel();
+    $('table').excelTableFilter({
+    	columnSelector: '.apply-filter'
+    });
+
 });

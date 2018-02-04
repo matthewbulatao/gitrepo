@@ -55,10 +55,10 @@
           <table class="table table-striped">
             <thead>
               <tr>
-                <th>Code</th>
-                <th>Name</th>
-                <th>Rate</th>
-                <th>&nbsp;</th> 
+                <th class="apply-filter">Code</th>
+                <th class="apply-filter">Name</th>
+                <th class="apply-filter">Rate</th>  
+                <th>&nbsp;</th>              
               </tr>
             </thead>
             <tbody>
