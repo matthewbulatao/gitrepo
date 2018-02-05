@@ -100,7 +100,7 @@
                   <td>${room.name}</td>
                   <td>${room.type}</td>
                   <td>${room.capacity}</td>
-                  <td>&#8369; <fmt:formatNumber type="number" pattern="#,###.##" value="${room.rate}" /></td>
+                  <td>&#8369; <fmt:formatNumber type="number" pattern="#,###.00" value="${room.rate}" /></td>
                   <td>${room.status}</td>   
                   <td>
                     <div class="text-center row">

@@ -16,6 +16,7 @@ import localservice.models.Room;
 import localservice.models.RoomType;
 import localservice.services.ApplicationPropertiesService;
 import localservice.services.MiscellaneousService;
+import localservice.services.ReservationService;
 import localservice.services.RoomService;
 import localservice.services.RoomTypeService;
 
@@ -30,9 +31,12 @@ public class AdminController extends BaseController {
 	private MiscellaneousService miscellaneousService;
 	@Autowired
 	private ApplicationPropertiesService applicationPropertiesService;
+	@Autowired
+	private ReservationService reservationService;
 	
 	@GetMapping("/admin")
-	public String adminHome() {
+	public String adminHome(HttpServletRequest request) {
+		request.setAttribute("reservationsTodayCount", reservationService.findAllReservationsToday().size());
 		return "admin";
 	}
 	
@@ -140,6 +144,20 @@ public class AdminController extends BaseController {
 		applicationPropertiesService.saveOrUpdate(applicationPropertiesForm);
 		request.setAttribute("config", applicationPropertiesService.findLatestConfig());
 		return "admin-config";
+	}
+	
+	@GetMapping("/admin-reservations")
+	public String adminReservations(HttpServletRequest request) {
+		request.setAttribute("reservationList", reservationService.findAll());
+		setModuleInSession(request, "admin_reservations", null);
+		return "admin-reservations";
+	}
+	
+	@GetMapping("/admin-reservations-today")
+	public String adminReservationsToday(HttpServletRequest request) {
+		request.setAttribute("reservationList", reservationService.findAllReservationsToday());
+		setModuleInSession(request, "admin_reservations", null);
+		return "admin-reservations";
 	}
 	
 }

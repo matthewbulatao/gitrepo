@@ -1,7 +1,7 @@
 <%@include file="header.jsp" %>
 
     <header class="masthead">
-      <div class="overlay">
+      <div class="overlay">        
         <div class="container">
           <h1 class="display-1 text-white">Casa Elum</h1>
           <h2 class="display-4 text-white">Pavilion & Resort</h2>
@@ -27,10 +27,10 @@
               <input type="text" class="form-control input-numeric" placeholder="Child" name="countChildren" />              
             </div>
             <div class="col-md-2">
-              <button class="btn btn-primary" type="submit">Search Rooms<i class="fa fa-search mar-l-5" aria-hidden="true"></i></button>
+              <button class="btn btn-primary" type="submit" id="submitButtonFromHome">Search Rooms<i class="fa fa-search mar-l-5" aria-hidden="true"></i></button>
             </div>
           </form>
-        </div>
+        </div>        
       </div>
     </header>    
 

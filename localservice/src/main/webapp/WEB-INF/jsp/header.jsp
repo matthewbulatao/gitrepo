@@ -37,6 +37,9 @@
             <li class="nav-item <c:if test="${CURRENT_MODULE == 'booking'}">active</c:if>">
               <a class="nav-link" href="booking-step1">Accommodation</a>
             </li>
+            <li class="nav-item <c:if test="${CURRENT_MODULE == 'rates'}">active</c:if>">
+              <a class="nav-link" href="rates">Rates</a>
+            </li>
             <li class="nav-item <c:if test="${CURRENT_MODULE == 'amenities'}">active</c:if>">
               <a class="nav-link" href="amenities">Amenities</a>
             </li>
@@ -53,3 +56,9 @@
         </div>
       </div>
     </nav>
+    
+    <div class="alert alert-success invisible"></div>
+    <div class="alert alert-info invisible"></div>
+    <div class="alert alert-warning invisible"></div>
+    <div class="alert alert-danger invisible"></div>    
+    

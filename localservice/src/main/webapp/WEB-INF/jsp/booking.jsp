@@ -74,6 +74,13 @@
         <div class="form-horizontal mar-t-20">
           <div class="form-group row">
             <div class="col-md-1"></div>
+            <label class="form-label col-md-2">*Email</label>
+            <div class="col-md-5">
+              <input type="text" class="form-control" name="email">
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-md-1"></div>
             <label class="form-label col-md-2">*First Name</label>
             <div class="col-md-5">
               <input type="text" class="form-control" name="firstName">
@@ -92,14 +99,7 @@
             <div class="col-md-5">
               <input type="text" class="form-control" name="contactNumber">
             </div>
-          </div>
-          <div class="form-group row">
-            <div class="col-md-1"></div>
-            <label class="form-label col-md-2">*Email</label>
-            <div class="col-md-5">
-              <input type="text" class="form-control" name="email">
-            </div>
-          </div>
+          </div>          
         </div>
       </div>
       <div class="container checkin-panel-booking mar-t-20">
@@ -142,7 +142,7 @@
             <br>
             Total Amount
             <br>
-            <span id="bookingTotal">&#8369; <fmt:formatNumber type="number" pattern="#,###.##" value="${reservationSubmitted.totalAmount}" /></span>
+            <span id="bookingTotal">&#8369; <fmt:formatNumber type="number" pattern="#,###.00" value="${reservationSubmitted.totalAmount}" /></span>
           </span>
         </div>
       </div>         

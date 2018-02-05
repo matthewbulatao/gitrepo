@@ -16,7 +16,7 @@
             <td>${misc.name}</td>
             <c:choose>
               <c:when test="${misc.rate > 0.0}">
-                <td>&#8369;  <fmt:formatNumber type="number" pattern="#,###.##" value="${misc.rate}" /></td>
+                <td>&#8369;  <fmt:formatNumber type="number" pattern="#,###.00" value="${misc.rate}" /></td>
               </c:when>
               <c:otherwise>
                 <td>FREE</td> 

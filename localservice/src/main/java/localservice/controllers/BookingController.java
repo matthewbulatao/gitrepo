@@ -64,6 +64,7 @@ public class BookingController extends BaseController {
 		reservationDraftInSession.setPaymentMethod(reservationForm.getPaymentMethod());
 		reservationDraftInSession.setMainGuest(saveGuest(reservationForm));		
 		reservationDraftInSession.setTotalAmount(reservationService.computeBooking(reservationDraftInSession));
+		reservationDraftInSession.setStatus("PENDING"); //TODO make it dynamic
 		Reservation reservationSubmitted = reservationService.saveOrUpdate(reservationDraftInSession);
 		request.setAttribute("reservationSubmitted", reservationSubmitted);	
 		return "booking";

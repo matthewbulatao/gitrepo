@@ -11,12 +11,12 @@
               <i class="fa fa-calendar-check-o fa-5x"></i>
             </div>
             <div class="col-md-8 text-right">
-              <div class="huge">26</div>
+              <div class="huge">${reservationsTodayCount}</div>
               <div>Bookings today</div>
             </div>
           </div>
         </div>
-        <a href="#">
+        <a href="admin-reservations-today">
           <div class="card-footer">
             <span class="pull-left">View Details</span> <span
               class="pull-right"><i
@@ -26,7 +26,7 @@
         </a>
       </div>
     </div>
-    <div class="col-lg-3 col-md-6">
+    <!-- <div class="col-lg-3 col-md-6">
       <div class="card card-green">
         <div class="card-heading">
           <div class="card-body row">
@@ -48,7 +48,7 @@
           </div>
         </a>
       </div>
-    </div>    
+    </div> -->    
   </div>
 </div>
 

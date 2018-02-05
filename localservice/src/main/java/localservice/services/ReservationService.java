@@ -3,6 +3,8 @@ package localservice.services;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
+import java.util.Date;
+import java.util.List;
 
 import javax.transaction.Transactional;
 
@@ -35,5 +37,8 @@ public class ReservationService extends BaseService<Reservation>{
 		return result;
 	}
 	
-	
+	public List<Reservation> findAllReservationsToday(){
+		Date today = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
+		return this.reservationRepository.findAllByCheckIn(today);
+	}
 }

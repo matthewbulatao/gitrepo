@@ -66,7 +66,7 @@
                 <tr>
                   <td>${miscellaneous.code}</td>
                   <td>${miscellaneous.name}</td>
-                  <td>&#8369; <fmt:formatNumber type="number" pattern="#,###.##" value="${miscellaneous.rate}" /></td>
+                  <td>&#8369; <fmt:formatNumber type="number" pattern="#,###.00" value="${miscellaneous.rate}" /></td>
                   <td>
                     <div class="text-center row">
                       <a href="admin-amenities-edit?code=${miscellaneous.code}" class="pad-r-10" title="Edit"><i class="fa fa-pencil" aria-hidden="true"></i></a>
