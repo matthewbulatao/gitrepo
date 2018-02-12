@@ -10,6 +10,7 @@
     <script src="../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 	<script src="../../vendor/bootstrap-datepicker.min.js"></script>
   	<script src="../../vendor/excel-bootstrap-table-filter-bundle.js"></script>
+    <script src="https://www.paypalobjects.com/api/checkout.js"></script>
     <script src="../../js/main.js"></script>
     
   </body>

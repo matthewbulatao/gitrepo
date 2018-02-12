@@ -1,8 +1,8 @@
 INSERT INTO APPLICATION_PROPERTIES(max_children_per_booking,max_adult_per_booking,entrance_fee_child,entrance_fee_adult,down_payment_percentage) VALUES(10,10,150,300,20);
 
-INSERT INTO ROOM(name,type,code,capacity,rate,status) VALUES('Cabana','STANDARD','2STA1',2,500.00,'A');
-INSERT INTO ROOM(name,type,code,capacity,rate,status) VALUES('Kalayaan','DELUXE','5DEL1',5,1500.00,'A');
-INSERT INTO ROOM(name,type,code,capacity,rate,status) VALUES('Bongga','SUITE','10SUI1',10,3000.00,'A');
+INSERT INTO ROOM(name,type,code,capacity,rate,status,description) VALUES('Cabana','STANDARD','2STA1',2,500.00,'A','Cozy room for 2 people (couple or partners), with super single bed and air-conditioning');
+INSERT INTO ROOM(name,type,code,capacity,rate,status,description) VALUES('Kalayaan','DELUXE','5DEL1',5,1500.00,'A','Nice room for 5 people, good for family, with 2 super single bed and air-conditioning with 1 bathroom');
+INSERT INTO ROOM(name,type,code,capacity,rate,status,description) VALUES('Villa Casa','SUITE','10SUI1',10,3000.00,'A','A big room good for 10 people, good for a big family or group or friends, with 2 queen-sized beds, air-conditioning with 2 bathrooms');
 
 INSERT INTO ROOM_TYPE(name) VALUES('STANDARD');
 INSERT INTO ROOM_TYPE(name) VALUES('DELUXE');
