@@ -62,7 +62,7 @@
         </c:forEach>
       </div>
       <div class="col-md-12" style="margin-bottom:80px;">
-        <button type="submit" class="btn btn-primary pull-right mar-t-20" style="margin-right:-15px;">Proceed to Payment <i class="fa fa-credit-card-alt" aria-hidden="true"></i></button>
+        <button type="submit" class="btn btn-primary pull-right mar-t-20" style="margin-right:-15px;" id="btnProceedToPayment">Proceed to Payment <i class="fa fa-credit-card-alt" aria-hidden="true"></i></button>
       </div>
     </form>    
   </div>
@@ -131,7 +131,7 @@
                 Total Amount = &#8369; <fmt:formatNumber type="number" pattern="#,###.00" value="${reservationDraft.totalAmount}" />
                 <br>
                 <hr>
-                Reservation (20%) = <b>&#8369; <fmt:formatNumber type="number" pattern="#,###.00" value="${dpAmount}" /></b>
+                Reservation (${dpRate}%) = <b>&#8369; <fmt:formatNumber type="number" pattern="#,###.00" value="${dpAmount}" /></b>
               </span>
             </div>
           </div>     
@@ -144,7 +144,7 @@
         </div>
       </div>
       <div class="col-md-12" style="margin-bottom:80px;">
-        <button type="submit" class="btn btn-primary pull-right mar-t-20" style="margin-right:-15px;">Proceed to Confirmation <i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
+        <button type="submit" class="btn btn-primary pull-right mar-t-20" style="margin-right:-15px;" id="btnProceedConfirm">Proceed to Confirmation <i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
       </div>
     </form>    
   </div>
@@ -211,7 +211,7 @@
             <br>
             Total Amount = &#8369; <fmt:formatNumber type="number" pattern="#,###.00" value="${reservationDraft.totalAmount}" />
             <br>
-            Reservation (20%) = <b>&#8369; <fmt:formatNumber type="number" pattern="#,###.00" value="${dpAmount}" /></b>
+            Reservation (${dpRate}%) = <b>&#8369; <fmt:formatNumber type="number" pattern="#,###.00" value="${dpAmount}" /></b>
           </span>
         </div>
       </div>
