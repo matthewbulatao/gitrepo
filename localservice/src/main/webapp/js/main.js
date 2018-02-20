@@ -34,18 +34,46 @@ $(document).ready(function() {
     	format: 'm/d/yyyy',
     	startDate: new Date()
     });
+    $('input[name=checkIn]').change(function(){
+    	var checkInDate = $(this).val();
+    	var minCheckOut = moment(checkInDate, 'M/D/YYYY').add(1, 'days').format('M/D/YYYY');
+    	$('input[name=checkOut]').datepicker('setStartDate', minCheckOut);
+    });
+    $('input[name=checkOut]').change(function(){
+    	var checkOutDate = $(this).val();
+    	var maxCheckIn = moment(checkOutDate, 'M/D/YYYY').subtract(1, 'days').format('M/D/YYYY');
+    	$('input[name=checkIn]').datepicker('setStartDate', new Date());
+    	$('input[name=checkIn]').datepicker('setEndDate', maxCheckIn);
+    });   
     $('#submitButtonFromHome').click(function(){
-    	if($('input[name=checkIn]').val()==""){
+    	var checkInDate = $('input[name=checkIn]').val();
+    	var checkOutDate = $('input[name=checkOut]').val();
+    	if(checkInDate==""){
     		showMessage('danger','<strong>Sorry</strong>, please specify CHECK-IN date');
     		return false;
     	}
-    	if($('input[name=checkOut]').val()==""){
+    	if(checkOutDate==""){
     		showMessage('danger','<strong>Sorry</strong>, please specify CHECK-OUT date');
     		return false;
     	}
-    	var countAdult = $('input[name=countAdult]').val();
-    	if(countAdult=="" || parseInt(countAdult)==0){
+    	if(checkInDate >= checkOutDate){
+    		showMessage('danger','<strong>Sorry</strong>, CHECK-IN must be before CHECK-OUT');
+    		return false;
+    	}
+    	var countAdult = parseInt($('input[name=countAdult]').val());
+    	var countChildren = parseInt($('input[name=countChildren]').val());
+    	var maxAdult = $('input[name=countAdult]').attr('max');
+    	var maxChild = $('input[name=countChildren]').attr('max');
+    	if($('input[name=countAdult]').val()=="" || countAdult==0){
     		showMessage('danger','<strong>Sorry</strong>, please specify atleast 1 adult');
+    		return false;
+    	}
+    	if(countAdult > maxAdult){
+    		showMessage('danger','<strong>Sorry</strong>, maximum adult allowed is ' + maxAdult);
+    		return false;
+    	}
+    	if(countChildren > maxChild){
+    		showMessage('danger','<strong>Sorry</strong>, maximum children allowed is ' + maxChild);
     		return false;
     	}
     });   
@@ -54,6 +82,36 @@ $(document).ready(function() {
     		showMessage('danger','<strong>Sorry</strong>, please select atleast 1 room');
     		return false;
     	}
+    	var countAdult = parseInt($('input[name=countAdult]').val());
+    	var countChildren = parseInt($('input[name=countChildren]').val());
+    	var capacityAdult = 0;
+    	var capacityChild = 0;
+    	$('input[name=selectedRoomIds]:checked').each(function(e){
+    		var id = $(this).attr('value');
+    		var roomAdult = parseInt($('#maxAdult_'+id).val());
+    		var roomChild = parseInt($('#maxChild_'+id).val());
+    		capacityAdult += roomAdult;
+    		capacityChild += roomChild;    		
+    	});
+    	console.log('room adults: ' + capacityAdult + ', room children: ' + capacityChild);
+    	console.log('input adults: ' + countAdult + ', input children: ' + countChildren);
+    	var combinedTotal = countAdult + countChildren;
+    	if(combinedTotal > capacityAdult){
+    		var allowanceAdult = capacityAdult - countAdult;
+    		if(allowanceAdult > 0){
+    			var leftChildren = countChildren - allowanceAdult;
+    			if(leftChildren > 0 && leftChildren > capacityChild){
+    				showMessage('danger','<strong>Sorry</strong>, numberof children left ('+ leftChildren +') is greater than selected room capacity for children ('+ capacityChild +'), please select bigger room or multiple rooms to proceed');
+            		return false;
+    			}
+    		}else if(allowanceAdult < 0){
+    			showMessage('danger','<strong>Sorry</strong>, number of adults ('+ countAdult +') is greater than selected room capacity for adults ('+ capacityAdult +'), please select bigger room or multiple rooms to proceed');
+        		return false;
+    		}else if(allowanceAdult == 0 && countChildren > capacityChild){    			
+        		showMessage('danger','<strong>Sorry</strong>, number of children ('+ countChildren +') is greater than selected room capacity for children ('+ capacityChild +'), please select bigger room or multiple rooms to proceed');
+        		return false;            	
+    		}   		
+    	}    	
     });
     $('#btnProceedConfirm').click(function(){
     	if($('input[name=email]').val()==""){

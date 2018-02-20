@@ -19,6 +19,7 @@ public class Room implements Serializable {
 	private String type;
 	private String code;
 	private int capacity;
+	private int capacityChildren;
 	private double rate;
 	private String description;
 	private String status;
@@ -83,6 +84,15 @@ public class Room implements Serializable {
 
 	public void setConflicts(List<String> conflicts) {
 		this.conflicts = conflicts;
+	}
+	
+
+	public int getCapacityChildren() {
+		return capacityChildren;
+	}
+
+	public void setCapacityChildren(int capacityChildren) {
+		this.capacityChildren = capacityChildren;
 	}
 
 	@Override

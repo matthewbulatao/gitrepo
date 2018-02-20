@@ -32,11 +32,21 @@
               </div>
             </div>
             <div class="form-group row">
-              <label class="form-label col-md-2">*Capacity</label>
+              <label class="form-label col-md-2">*Capacity (Adult)</label>
               <div class="col-md-5">
                 <select class="form-control" name="capacity" value="${room.capacity}">
-                  <c:forEach var="i" begin="1" end="20">
+                  <c:forEach var="i" begin="1" end="50">
                     <option value="${i}" <c:if test="${room.capacity == i}">selected</c:if>>${i}</option>
+                  </c:forEach>                  
+                </select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="form-label col-md-2">*Capacity (Child)</label>
+              <div class="col-md-5">
+                <select class="form-control" name="capacityChildren" value="${room.capacityChildren}">
+                  <c:forEach var="i" begin="1" end="20">
+                    <option value="${i}" <c:if test="${room.capacityChildren == i}">selected</c:if>>${i}</option>
                   </c:forEach>                  
                 </select>
               </div>
@@ -87,7 +97,8 @@
                 <th class="apply-filter">Code</th>
                 <th class="apply-filter">Name</th>
                 <th class="apply-filter">Type</th>
-                <th class="apply-filter">Capacity</th>
+                <th class="apply-filter">Max-Adult</th>
+                <th class="apply-filter">Max-Child</th>
                 <th class="apply-filter">Rate</th>
                 <th class="apply-filter">Status</th>
                 <th>&nbsp;</th>
@@ -100,6 +111,7 @@
                   <td>${room.name}</td>
                   <td>${room.type}</td>
                   <td>${room.capacity}</td>
+                  <td>${room.capacityChildren}</td>
                   <td>&#8369; <fmt:formatNumber type="number" pattern="#,###.00" value="${room.rate}" /></td>
                   <td>${room.status}</td>   
                   <td>

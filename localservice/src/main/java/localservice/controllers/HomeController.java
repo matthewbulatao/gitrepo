@@ -1,11 +1,12 @@
-package localservice.controllers;
+	package localservice.controllers;
 
 import java.io.File;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
@@ -38,9 +39,13 @@ public class HomeController extends BaseController {
 	@Autowired
 	private MailService mailService;
 	
+	private SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+	
 	@GetMapping("/")
 	public String home(HttpServletRequest request) {
 		setModuleInSession(request, StringUtils.EMPTY, null);
+		request.setAttribute("config", applicationPropertiesService.findLatestConfig());
+		request.setAttribute("dateToday", formatter.format(new Date()));
 		return "index";
 	}
 	

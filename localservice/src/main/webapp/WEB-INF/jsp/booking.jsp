@@ -50,7 +50,10 @@
               </div> -->
               <div class="media-body mar-l-20">
                 <h4 class="media-heading">${room.name}</h4>
+                <input type="hidden" id="maxAdult_${room.id}" value="${room.capacity}" />
+                <input type="hidden" id="maxChild_${room.id}" value="${room.capacityChildren}" />
                 <p>${room.type}</p>
+                <p>Max Adult (${room.capacity}) | Max Child (${room.capacityChildren})</p>
                 <p>${room.description}</p>  
                 <c:if test="${room.conflicts != null}">
                   <ul>
@@ -87,7 +90,7 @@
             <div class="col-md-1"></div>
             <label class="form-label col-md-2">*Email</label>
             <div class="col-md-5">
-              <input type="text" class="form-control" name="email">
+              <input type="email" class="form-control" name="email">
             </div>
           </div>
           <div class="form-group row">

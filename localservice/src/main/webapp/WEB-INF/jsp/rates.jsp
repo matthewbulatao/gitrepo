@@ -21,7 +21,8 @@
         <tr>
           <th>Name</th>
           <th>Type</th>
-          <th>Capacity</th>
+          <th>Max-Adult</th>
+          <th>Max-Child</th>
           <th>Rate</th>          
         </tr>
       </thead>
@@ -31,6 +32,7 @@
             <td>${room.name}</td>
             <td>${room.type}</td>
             <td>${room.capacity}</td>
+            <td>${room.capacityChildren}</td>
             <td>&#8369; <fmt:formatNumber type="number" pattern="#,###.00" value="${room.rate}" /></td>                        
           </tr>
         </c:forEach>
