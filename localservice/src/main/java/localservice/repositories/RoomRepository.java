@@ -11,4 +11,5 @@ public interface RoomRepository extends CrudRepository<Room, Integer>{
 	public List<Room> findByType(String type);
 	public List<Room> findByCode(String code);
 	public Room findOneByCode(String code);
+	public List<Room> findAllByStatusOrderByCapacityAsc(String status);
 }

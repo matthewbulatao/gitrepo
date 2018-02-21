@@ -45,7 +45,7 @@ public class HomeController extends BaseController {
 	public String home(HttpServletRequest request) {
 		setModuleInSession(request, StringUtils.EMPTY, null);
 		request.setAttribute("config", applicationPropertiesService.findLatestConfig());
-		request.setAttribute("dateToday", formatter.format(new Date()));
+		request.setAttribute("dateToday", formatter.format(new Date()));		
 		return "index";
 	}
 	
@@ -53,7 +53,7 @@ public class HomeController extends BaseController {
 	public String rates(HttpServletRequest request) {
 		String page = "rates";
 		request.setAttribute("config", applicationPropertiesService.findLatestConfig());
-		request.setAttribute("roomList", roomService.findAll());
+		request.setAttribute("roomList", roomService.findAllActiveOrderByCapacity());
 		setModuleInSession(request, page, null);
 		return page;
 	}

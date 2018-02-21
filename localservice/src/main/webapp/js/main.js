@@ -77,7 +77,7 @@ $(document).ready(function() {
     		return false;
     	}
     });   
-    $('#btnProceedToPayment').click(function(){
+    $('.btnProceedToPayment').click(function(){
     	if($('input[name=selectedRoomIds]:checked').length == 0){
     		showMessage('danger','<strong>Sorry</strong>, please select atleast 1 room');
     		return false;
@@ -114,22 +114,40 @@ $(document).ready(function() {
     	}    	
     });
     $('#btnProceedConfirm').click(function(){
-    	if($('input[name=email]').val()==""){
-    		showMessage('danger','<strong>Sorry</strong>, please specify your Email');
+//    	if($('input[name=email]').val()==""){
+//    		showMessage('danger','<strong>Sorry</strong>, please specify your Email');
+//    		return false;
+//    	}
+    	
+    	if($('input[name=firstName]').val()!="" && $('input[name=firstName]').val().trim().length < 2){
+    		showMessage('danger','<strong>Sorry</strong>, invalid first name format (alphabetic 2-25 chars)');
     		return false;
     	}
-    	if($('input[name=firstName]').val()==""){
-    		showMessage('danger','<strong>Sorry</strong>, please specify your first name');
+    	if($('input[name=lastName]').val()!="" && $('input[name=lastName]').val().trim().length < 2){
+    		showMessage('danger','<strong>Sorry</strong>, invalid last name format (alphabetic 2-25 chars)');
     		return false;
     	}
-    	if($('input[name=lastName]').val()==""){
-    		showMessage('danger','<strong>Sorry</strong>, please specify your last name');
-    		return false;
-    	}
-    	if($('input[name=contactNumber]').val()==""){
-    		showMessage('danger','<strong>Sorry</strong>, please specify your contact number');
-    		return false;
-    	}
+//    	if($('input[name=contactNumber]').val()==""){
+//    		showMessage('danger','<strong>Sorry</strong>, please specify your contact number');
+//    		return false;
+//    	}
+    });
+    
+    $(".validate-alphabetic").limitkeypress({ rexp: /^[A-Za-z ]*$/ });
+    $(".validate-alphanumeric").limitkeypress({ rexp: /^[A-Za-z0-9 ]*$/ });
+    $(".validate-numeric-int").limitkeypress({ rexp: /^[0-9]*$/ });
+    $(".validate-numeric-float").limitkeypress({ rexp: /^[0-9.]*$/ });
+    
+//    $("a.force-redirect").click(function(){
+//    	var href = $(this).attr('href');
+//    	window.location = "/" + href;
+//    });
+    
+    $('input[name=password]').change(function(){
+    	$(this).attr('maxlength','15');
+    	$(this).attr('pattern','.{8,15}');
+    	$(this).attr('title','password 8-15 characters long');
+    	$('input[name=changedPassword]').val(true);
     });
     $('#btnPrintBooking').click(function(){
     	$('#stepsPanel').hide();
@@ -173,6 +191,9 @@ $(document).ready(function() {
 	
 	if($('#messageSent').val()){
 		showMessage('success','<strong>Thanks</strong>, your message has been sent successfully');
+	}
+	if($('#operationSuccess').val()){
+		showMessage('success','<strong>Success</strong>, information successfully processed');
 	}
     
     /*paypal.Button.render({

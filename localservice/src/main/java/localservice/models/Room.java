@@ -3,6 +3,7 @@ package localservice.models;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -21,11 +22,13 @@ public class Room implements Serializable {
 	private int capacity;
 	private int capacityChildren;
 	private double rate;
+	@Column(length=250)
 	private String description;
 	private String status;
 	
 	@Transient
 	private List<String> conflicts;
+	@Transient boolean selected;
 	
 	public Room() {}
 	
@@ -76,21 +79,22 @@ public class Room implements Serializable {
 	}
 	public void setStatus(String status) {
 		this.status = status;
-	}	
-
+	}
 	public List<String> getConflicts() {
 		return conflicts;
 	}
-
 	public void setConflicts(List<String> conflicts) {
 		this.conflicts = conflicts;
 	}
-	
-
+	public boolean isSelected() {
+		return selected;
+	}
+	public void setSelected(boolean selected) {
+		this.selected = selected;
+	}
 	public int getCapacityChildren() {
 		return capacityChildren;
 	}
-
 	public void setCapacityChildren(int capacityChildren) {
 		this.capacityChildren = capacityChildren;
 	}

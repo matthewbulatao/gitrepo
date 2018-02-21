@@ -21,6 +21,7 @@ public class ApplicationProperties implements Serializable {
 	private double entranceFeeAdult;
 	private double entranceFeeChild;
 	private int downPaymentPercentage;
+	private int vatPercentage;
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date changeDate;
 	
@@ -65,6 +66,12 @@ public class ApplicationProperties implements Serializable {
 	}
 	public void setDownPaymentPercentage(int downPaymentPercentage) {
 		this.downPaymentPercentage = downPaymentPercentage;
+	}	
+	public int getVatPercentage() {
+		return vatPercentage;
+	}
+	public void setVatPercentage(int vatPercentage) {
+		this.vatPercentage = vatPercentage;
 	}
 	@Override
 	public String toString() {

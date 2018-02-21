@@ -6,25 +6,25 @@
       <div class="form-group row">
         <label class="form-label col-md-3">*Full Name</label>
         <div class="col-md-9">
-          <input type="text" class="form-control" name="fullName">
+          <input type="text" class="form-control validate-alphabetic" name="fullName" maxlength="50" pattern="[a-zA-Z ]{2,50}" title="letters and space only (2-50 chars)" required>
         </div>
       </div>
       <div class="form-group row">
         <label class="form-label col-md-3">*Email</label>
         <div class="col-md-9">
-          <input type="text" class="form-control" name="email">
+          <input type="text" class="form-control" name="email" placeholder="ex: user@gmail.com" maxlength="50" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,3}$" title="ex: user@gmail.com" required>
         </div>
       </div>
       <div class="form-group row">
-        <label class="form-label col-md-3">Contact Number</label>
+        <label class="form-label col-md-3">Mobile Number</label>
         <div class="col-md-9">
-          <input type="text" class="form-control" name="contactNumber">
+          <input type="text" class="form-control validate-numeric-int" name="contactNumber" placeholder="ex: 09335558888" maxlength="11" pattern="09\d{9}" title="numbers only starting at 09 (11 digits)" required>
         </div>
       </div>
       <div class="form-group row">
         <label class="form-label col-md-3">*Message</label>
         <div class="col-md-9">
-          <textarea rows="5" class="form-control" name="message"></textarea>
+          <textarea rows="5" class="form-control" name="message" placeholder="Maximum of 500 characters" maxlength="500" required></textarea>
         </div>
       </div>  
       <div class="form-group row">

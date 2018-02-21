@@ -13,9 +13,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class LoginController {
 
 	@GetMapping(value = "/login")
-	public String login(String logout) {
+	public String login(String logout, String error, HttpServletRequest request) {
 		if(null != logout) {
 			return "logout";
+		}
+		if(null != error) {
+			request.setAttribute("loginError", true);
 		}
 		return "login";
 	}

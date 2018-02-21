@@ -6,7 +6,7 @@
     <form class="form-horizontal col-md-12" action="admin-room-types-save" method="POST">
       <input type="hidden" name="id" value="${roomType == null ? 0 : roomType.id}">
       <div class="form-group row col-md-12">        
-        <input type="text" class="form-control col-md-5" name="name" value="${roomType.name}">
+        <input type="text" class="form-control col-md-5" name="name" value="${roomType.name}" maxlength="25" pattern="[a-zA-Z0-9 ]{2,25}" title="alphanumeric (2-25 chars)" required>
         <button type="submit" class="btn btn-primary mar-l-10">Save <i class="fa fa-floppy-o" aria-hidden="true"></i></button> 
       </div>
     </form>

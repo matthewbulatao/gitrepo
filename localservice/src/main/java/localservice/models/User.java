@@ -31,6 +31,8 @@ public class User implements Serializable {
 	
 	@Transient
 	private String[] selectedRoleIds;
+	@Transient
+	private boolean changedPassword;
 	
 	public int getId() {
 		return id;
@@ -92,6 +94,12 @@ public class User implements Serializable {
 	}
 	public void setStatus(String status) {
 		this.status = status;
+	}	
+	public boolean isChangedPassword() {
+		return changedPassword;
+	}
+	public void setChangedPassword(boolean changedPassword) {
+		this.changedPassword = changedPassword;
 	}
 	@Override
 	public int hashCode() {

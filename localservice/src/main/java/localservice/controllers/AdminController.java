@@ -195,6 +195,7 @@ public class AdminController extends BaseController {
 	public String adminConfig(@ModelAttribute ApplicationProperties applicationPropertiesForm, BindingResult bindingResult, HttpServletRequest request) {
 		applicationPropertiesService.saveOrUpdate(applicationPropertiesForm);
 		request.setAttribute("config", applicationPropertiesService.findLatestConfig());
+		request.setAttribute("operationSuccess", true);
 		return "admin-config";
 	}
 	

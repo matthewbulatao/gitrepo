@@ -28,7 +28,9 @@ public class UserService extends BaseService<User> implements UserDetailsService
 	
 	@Override
 	public User saveOrUpdate(User user) {
-		user.setPassword(new BCryptPasswordEncoder(11).encode(user.getPassword()));
+		if(user.getId() == 0 || user.isChangedPassword()) {
+			user.setPassword(new BCryptPasswordEncoder(11).encode(user.getPassword()));
+		}		
 		return super.saveOrUpdate(user);
 	}
 

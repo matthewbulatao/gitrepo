@@ -18,41 +18,42 @@
             <div class="form-group row">
               <label class="form-label col-md-2">*First Name</label>
               <div class="col-md-5">
-                <input type="text" class="form-control" name="firstName" value="${user.firstName}">
+                <input type="text" class="form-control validate-alphabetic" name="firstName" value="${user.firstName}" maxlength="25" pattern="[a-zA-Z ]{2,25}" title="letters and space only (2-25 chars)" required>
               </div>
             </div>
             <div class="form-group row">
               <label class="form-label col-md-2">*Last Name</label>
               <div class="col-md-5">
-                <input type="text" class="form-control" name="lastName" value="${user.lastName}">
+                <input type="text" class="form-control validate-alphabetic" name="lastName" value="${user.lastName}" maxlength="25" pattern="[a-zA-Z ]{2,25}" title="letters and space only (2-25 chars)" required>
               </div>
             </div>
             <div class="form-group row">
-              <label class="form-label col-md-2">*Contact</label>
+              <label class="form-label col-md-2">*Mobile Number</label>
               <div class="col-md-5">
-                <input type="text" class="form-control" name="contactNumber" value="${user.contactNumber}">
+                <input type="text" class="form-control validate-numeric-int" name="contactNumber" value="${user.contactNumber}" placeholder="ex: 09335558888" maxlength="11" pattern="09\d{9}" title="numbers only starting at 09 (11 digits)" required>
               </div>
             </div>
             <div class="form-group row">
               <label class="form-label col-md-2">*Email</label>
               <div class="col-md-5">
-                <input type="text" class="form-control" name="email" value="${user.email}">
+                <input type="text" class="form-control" name="email" value="${user.email}" placeholder="ex: user@gmail.com" maxlength="50" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,3}$" title="ex: user@gmail.com" required>
               </div>
             </div>
             <div class="form-group row">
               <label class="form-label col-md-2">*Username</label>
               <div class="col-md-5">
-                <input type="text" class="form-control" name="userName" value="${user.userName}">
+                <input type="text" class="form-control" name="userName" value="${user.userName}" maxlength="15" pattern="[a-zA-Z0-9 ]{5,15}" title="alphanumeric (5-15 chars)" required>
               </div>
             </div>
             <div class="form-group row">
               <label class="form-label col-md-2">*Password</label>
               <div class="col-md-5">
-                <input type="password" class="form-control" name="password" value="${user.password}">
+                <input type="hidden" name="changedPassword" value="false">
+                <input type="password" class="form-control" name="password" value="${user.password}" ${user.id > 0 ? '' : 'maxlength="15" pattern=".{8,15}" title="password 8-15 characters long"'} required>
               </div>
             </div>
             <div class="form-group row">
-              <label class="form-label col-md-2">*Roles</label>
+              <label class="form-label col-md-2">Roles</label>
               <div class="col-md-5">
                 <c:forEach var="role" items="${roleList}">
                   <c:choose>
@@ -86,7 +87,7 @@
             </div>                
             <div class="form-group row">
               <div class="col-md-7">
-                <button href="admin-rooms" class="btn btn-default pull-right mar-l-10">Cancel <i class="fa fa-eraser" aria-hidden="true"></i></button>
+                <a href="admin-profiles" class="btn btn-default pull-right mar-l-10">Cancel <i class="fa fa-eraser" aria-hidden="true"></i></a>
                 <button type="submit" class="btn btn-primary pull-right">Save <i class="fa fa-floppy-o" aria-hidden="true"></i></button>                
               </div>
             </div>      
@@ -127,14 +128,14 @@
                   <td>
                     <c:forEach var="role" items="${user.roles}">${role.name} </c:forEach>
                   </td>
-                  <td>${user.status}</td>
+                  <td>${user.status == 'A' ? 'Active' : 'Inactive'}</td>
                   <td>
                     <div class="text-center row">
                       <a href="admin-profiles-edit?id=${user.id}" class="pad-r-10" title="Edit"><i class="fa fa-pencil" aria-hidden="true"></i></a>
-                      <form action="admin-profiles-delete" method="POST">
+                      <%-- <form action="admin-profiles-delete" method="POST">
                         <input type="hidden" name="id" value="${user.id}" />
                         <a href="#" title="Delete" class="delete-icon"><i class="fa fa-trash" aria-hidden="true"></i></a>
-                      </form>                      
+                      </form>   --%>                    
                     </div>                    
                   </td>               
                 </tr>

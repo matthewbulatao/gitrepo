@@ -45,6 +45,12 @@ public class ReservationService extends BaseService<Reservation>{
 		return dpAmount;
 	}
 	
+	public double getVatAmount(double totalAmount) {
+		int vatRate = applicationPropertiesService.findLatestConfig().getVatPercentage();
+		double vatAmount = totalAmount * vatRate / 100.0;
+		return vatAmount;
+	}
+	
 	public double getSumOfRoomRate(List<Room> selectedRooms) {
 		double sumRooms = 0.0;
 		for(Room room : selectedRooms) {
@@ -84,18 +90,28 @@ public class ReservationService extends BaseService<Reservation>{
 	}
 	
 	public String generateReferenceId() {
-		StringBuilder sb = new StringBuilder();
-		String alphabet= "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        String s = "";
-        Random random = new Random();
-        sb.append(String.valueOf(random.nextInt(9)));
-        int randomLen = 5;
-        for (int i = 0; i < randomLen; i++) {
-            char c = alphabet.charAt(random.nextInt(26));
-            s+=c;
-        } 
-        sb.append(s);
-        sb.append(String.valueOf(random.nextInt(9)));
+		StringBuilder sb;
+		boolean exists = false;
+		do {
+			sb = new StringBuilder();
+			String alphabet= "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	        String s = "";
+	        Random random = new Random();
+	        sb.append(String.valueOf(random.nextInt(9)));
+	        int randomLen = 5;
+	        for (int i = 0; i < randomLen; i++) {
+	            char c = alphabet.charAt(random.nextInt(26));
+	            s+=c;
+	        } 
+	        sb.append(s);
+	        sb.append(String.valueOf(random.nextInt(9)));
+	        
+	        Reservation existingReservation = this.findOneByReferenceId(sb.toString());
+	        if(null != existingReservation) {
+	        	exists = true;
+	        }
+		}while(exists);		
+		
         return sb.toString();
 	}
 	

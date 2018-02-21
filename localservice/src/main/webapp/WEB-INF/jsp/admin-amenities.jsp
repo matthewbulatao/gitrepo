@@ -18,24 +18,24 @@
             <div class="form-group row">
               <label class="form-label col-md-2">*Name</label>
               <div class="col-md-5">
-                <input type="text" class="form-control" name="name" value="${misc.name}">
+                <input type="text" class="form-control validate-alphanumeric" name="name" value="${misc.name}" maxlength="25" pattern="[a-zA-Z0-9 ]{2,25}" title="alphanumeric (2-25 chars)" required>
               </div>
             </div>            
             <div class="form-group row">
               <label class="form-label col-md-2">*Rate (&#8369;)</label>
-              <div class="col-md-5">
-                <input type="text" class="form-control" name="rate" value="${misc.rate}">
+              <div class="col-md-2">
+                <input type="number" class="form-control" name="rate" value="${misc.rate}" step="0.50" required>
               </div>
             </div>  
             <div class="form-group row">
               <label class="form-label col-md-2">Description</label>
               <div class="col-md-5">
-                <textarea rows="3" class="form-control" name="description" value="${misc.description}"></textarea>
+                <textarea rows="3" class="form-control" name="description" maxlength="250" required>${misc.description}</textarea>
               </div>
             </div>  
             <div class="form-group row">
               <div class="col-md-7">
-                <button href="admin-amenities" class="btn btn-default pull-right mar-l-10">Cancel <i class="fa fa-eraser" aria-hidden="true"></i></button>
+                <a href="admin-amenities" class="btn btn-default pull-right mar-l-10">Cancel <i class="fa fa-eraser" aria-hidden="true"></i></a>
                 <button type="submit" class="btn btn-primary pull-right">Save <i class="fa fa-floppy-o" aria-hidden="true"></i></button>                
               </div>
             </div>      

@@ -18,7 +18,7 @@
             <div class="form-group row">
               <label class="form-label col-md-2">*Name</label>
               <div class="col-md-5">
-                <input type="text" class="form-control" name="name" value="${room.name}">
+                <input type="text" class="form-control validate-alphanumeric" name="name" value="${room.name}" maxlength="25" pattern="[a-zA-Z0-9 ]{2,25}" title="alphanumeric (2-25 chars)" required>
               </div>
             </div>
             <div class="form-group row">
@@ -33,34 +33,26 @@
             </div>
             <div class="form-group row">
               <label class="form-label col-md-2">*Capacity (Adult)</label>
-              <div class="col-md-5">
-                <select class="form-control" name="capacity" value="${room.capacity}">
-                  <c:forEach var="i" begin="1" end="50">
-                    <option value="${i}" <c:if test="${room.capacity == i}">selected</c:if>>${i}</option>
-                  </c:forEach>                  
-                </select>
+              <div class="col-md-2">
+                <input type="number" min="1" max="50" class="form-control" name="capacity" value="${room.capacity}" required/>                
               </div>
             </div>
             <div class="form-group row">
               <label class="form-label col-md-2">*Capacity (Child)</label>
-              <div class="col-md-5">
-                <select class="form-control" name="capacityChildren" value="${room.capacityChildren}">
-                  <c:forEach var="i" begin="1" end="20">
-                    <option value="${i}" <c:if test="${room.capacityChildren == i}">selected</c:if>>${i}</option>
-                  </c:forEach>                  
-                </select>
+              <div class="col-md-2">
+                <input type="number" min="1" max="25" class="form-control" name="capacityChildren" value="${room.capacityChildren}" required/>                
               </div>
             </div>
             <div class="form-group row">
               <label class="form-label col-md-2">*Rate (&#8369;)</label>
-              <div class="col-md-5">
-                <input type="text" class="form-control" name="rate" value="${room.rate}">
+              <div class="col-md-2">
+                <input type="number" class="form-control" name="rate" value="${room.rate}" step="0.50" required>
               </div>
             </div>  
             <div class="form-group row">
-              <label class="form-label col-md-2">Description</label>
+              <label class="form-label col-md-2">*Description</label>
               <div class="col-md-5">
-                <textarea rows="3" class="form-control" name="description" value="${room.description}"></textarea>
+                <textarea rows="3" class="form-control" name="description" maxlength="250" required>${room.description}</textarea>
               </div>
             </div>  
             <div class="form-group row">
@@ -74,7 +66,7 @@
             </div>                
             <div class="form-group row">
               <div class="col-md-7">
-                <button href="admin-rooms" class="btn btn-default pull-right mar-l-10">Cancel <i class="fa fa-eraser" aria-hidden="true"></i></button>
+                <a href="admin-rooms" class="btn btn-default pull-right mar-l-10">Cancel <i class="fa fa-eraser" aria-hidden="true"></i></a>
                 <button type="submit" class="btn btn-primary pull-right">Save <i class="fa fa-floppy-o" aria-hidden="true"></i></button>                
               </div>
             </div>      
@@ -113,7 +105,7 @@
                   <td>${room.capacity}</td>
                   <td>${room.capacityChildren}</td>
                   <td>&#8369; <fmt:formatNumber type="number" pattern="#,###.00" value="${room.rate}" /></td>
-                  <td>${room.status}</td>   
+                  <td>${room.status == 'A' ? 'Active' : 'Inactive'}</td>   
                   <td>
                     <div class="text-center row">
                       <a href="admin-rooms-edit?code=${room.code}" class="pad-r-10" title="Edit"><i class="fa fa-pencil" aria-hidden="true"></i></a>

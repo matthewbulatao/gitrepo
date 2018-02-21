@@ -1,10 +1,13 @@
 package localservice.services;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
+import localservice.models.Consts;
 import localservice.models.Room;
 import localservice.repositories.RoomRepository;
 
@@ -39,5 +42,9 @@ public class RoomService extends BaseService<Room> {
 	public Room findByCode(String code) {
 		return this.roomRepository.findOneByCode(code);
 	}	
+	
+	public List<Room> findAllActiveOrderByCapacity(){
+		return this.roomRepository.findAllByStatusOrderByCapacityAsc(Consts.STATUS_ACTIVE);
+	}
 	
 }

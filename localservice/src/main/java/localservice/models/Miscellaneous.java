@@ -2,6 +2,7 @@ package localservice.models;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,6 +17,7 @@ public class Miscellaneous implements Serializable {
 	private String code;
 	private String name;
 	private double rate;
+	@Column(length=250)
 	private String description;
 	
 	public int getId() {
