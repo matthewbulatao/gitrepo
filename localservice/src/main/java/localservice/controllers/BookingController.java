@@ -78,6 +78,7 @@ public class BookingController extends BaseController {
 		request.getSession().setAttribute("vatAmount", reservationService.getVatAmount(totalAmount));	
 		request.getSession().setAttribute("reservationDraft", reservationForm);		
 		
+		request.setAttribute("renderPaypal", true);
 		request.setAttribute("config", applicationPropertiesService.findLatestConfig());
 		return "booking";
 	}

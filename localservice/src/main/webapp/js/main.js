@@ -10,6 +10,60 @@ function showMessage(_type,_message){
 	});
 }
 
+function validatePaymentForm(){
+	$('#paymentForm :input:visible[required="required"]').each(function(){
+	    if(!this.validity.valid)
+	    {
+	        $(this).focus();
+	        return false;
+	    }
+	});
+	return true;
+}
+
+function renderPaypalButton(){
+	console.log('rendering paypal button...');
+	$('#paypal-button').empty();
+	paypal.Button.render({
+        env: 'sandbox', // Or 'production',
+        commit: true, // Show a 'Pay Now' button
+        style: {
+          color: 'gold',
+          size: 'small'
+        },
+        client: {
+        	sandbox: 'AdS_YcdMs815IKiinKsnzRKzIaIkSQrkwaUMWTdklbjCfhV8ultBNx1vXSltXtYLa2Jq0BrJBtGK5Qq4',
+        	production: 'Adg8Nm4JiurJjBNVOCLSJXsUehmrcaTmnVSxauW5uC0llMUoN6LVHhTAyUIFi5PfUlgb3vcbhBlEsGVr'
+        },
+        payment: function(data, actions) {
+        	if(validatePaymentForm()){
+        		return actions.payment.create({
+                    payment: {
+                        transactions: [
+                            {
+                                amount: { total: $('#dpAmountForPaypal').val(), currency: 'PHP' }
+                            }
+                        ]
+                    }
+                });
+        	}        	
+        },
+        onAuthorize: function(data, actions) {
+        	console.log('reservation payment authorized via paypal');
+        	return actions.payment.execute().then(function(payment) {
+        		console.log('proceeding to confirmation...');
+        		$('#formPayment').submit();
+            });
+        },
+        onCancel: function(data, actions) {
+        	showMessage('warning','Paypal transaction cancelled');
+        },
+        onError: function(err) {
+        	showMessage('danger','Paypal transaction error, check your account balance');
+        }
+      }, '#paypal-button');
+}
+
 $(document).ready(function() {
     $('.icon-calendar').click(function(){
     	$(this).next().datepicker().focus();    	
@@ -195,43 +249,20 @@ $(document).ready(function() {
 	if($('#operationSuccess').val()){
 		showMessage('success','<strong>Success</strong>, information successfully processed');
 	}
-    
-    /*paypal.Button.render({
-        env: 'sandbox', // Or 'production',
-        commit: true, // Show a 'Pay Now' button
-        style: {
-          color: 'gold',
-          size: 'small'
-        },
-        client: {
-        	sandbox: 'SCC3BHU38BZNS'
-        },
-        payment: function(data, actions) {
-        	return actions.payment.create({
-                payment: {
-                    transactions: [
-                        {
-                            amount: { total: $('#dpAmountForPaypal').val(), currency: 'PHP' }
-                        }
-                    ]
-                }
-            });
-        },
-        onAuthorize: function(data, actions) {
-        	return actions.payment.execute().then(function(payment) {
-        		$('#formPayment').submit();
-            });
-        },
-        onCancel: function(data, actions) {
-           
-           * Buyer cancelled the payment 
-           
-        },
-        onError: function(err) {
-           
-           * An error occurred during the transaction 
-           
-        }
-      }, '#paypal-button');*/
-    
+    $('#rdoPayPal').change(function(){
+    	if(this.checked){
+    		$('#btnProceedConfirm').addClass('invisible');    
+    		$('#paypal-button').removeClass('invisible');    		
+    		renderPaypalButton();    		
+    	}
+    });
+    $('#rdoPayBank').change(function(){
+    	if(this.checked){
+    		$('#paypal-button').addClass('invisible');    		
+    		$('#btnProceedConfirm').removeClass('invisible'); 
+    	}
+    });
+    if($('#renderPaypal').val()){
+    	renderPaypalButton();
+    }
 });

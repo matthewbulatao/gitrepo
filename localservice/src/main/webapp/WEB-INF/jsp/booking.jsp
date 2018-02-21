@@ -116,11 +116,11 @@
       <div class="container checkin-panel-booking mar-t-10">        
         <div class="form-horizontal mar-t-20">
           <div class="form-group row">
-             
+            <input type="hidden" id="renderPaypal" value="${renderPaypal}"/> 
             <div class="col-md-6">
               <div class="col-md-12 row mar-b-20">
-                <label class="radio-inline col-md-6"><input type="radio" name="paymentMethod" value="BANK_DEPOSIT" checked> Bank Deposit <i class="fa fa-university" aria-hidden="true"></i></label>
-                <label class="radio-inline col-md-6"><input type="radio" name="paymentMethod" value="PAYPAL"> Paypal <i class="fa fa-paypal" aria-hidden="true"></i></label>
+                <label class="radio-inline col-md-6"><input type="radio" id="rdoPayBank" name="paymentMethod" value="BANK_DEPOSIT"> Bank Deposit <i class="fa fa-university" aria-hidden="true"></i></label>
+                <label class="radio-inline col-md-6"><input type="radio" id="rdoPayPal" name="paymentMethod" value="PAYPAL" checked> Paypal <i class="fa fa-paypal" aria-hidden="true"></i></label>
               </div>
               <hr>
               <div class="container">
@@ -156,7 +156,8 @@
         </div>
       </div>
       <div class="col-md-12" style="margin-bottom:80px;">
-        <button type="submit" class="btn btn-primary pull-right mar-l-10 mar-t-20" style="margin-right:-15px;" id="btnProceedConfirm">Proceed to Confirmation <i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
+        <div id="paypal-button" class="pull-right mar-l-10 mar-t-20"></div>
+        <button type="submit" class="btn btn-primary pull-right mar-l-10 mar-t-20 invisible" style="margin-right:-15px;" id="btnProceedConfirm">Proceed to Confirmation <i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
         <a href="booking-step1" class="btn btn-primary pull-right mar-t-20 mar-r-10">Back to Rooms <i class="fa fa-undo" aria-hidden="true"></i></a>
       </div>
     </form>    
@@ -233,7 +234,8 @@
       </div>
     </div>
     <div class="col-md-12" style="margin-bottom:80px;">
-      <button class="btn btn-primary pull-right mar-t-20 hidden-print" style="margin-right:-15px;" id="btnPrintBooking">Print Confirmation <i class="fa fa-print" aria-hidden="true"></i></button>
+      <button class="btn btn-primary pull-right mar-l-10 mar-t-20 hidden-print" style="margin-right:-15px;" id="btnPrintBooking">Print Confirmation <i class="fa fa-print" aria-hidden="true"></i></button>
+      <a href="/" class="btn btn-primary pull-right mar-t-20 mar-r-10">Back to Home <i class="fa fa-undo" aria-hidden="true"></i></a>
     </div>
   </div>
   

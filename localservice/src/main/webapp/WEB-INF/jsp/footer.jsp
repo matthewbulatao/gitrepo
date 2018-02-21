@@ -13,7 +13,7 @@
   	<script src="../../vendor/excel-bootstrap-table-filter-bundle.js"></script>
     <script src="../../vendor/jquery.limitkeypress.js"></script>
     <script src="../../vendor/moment.js"></script>
-    <!-- <script src="https://www.paypalobjects.com/api/checkout.js"></script> -->
+    <script src="https://www.paypalobjects.com/api/checkout.js"></script>
     <script src="../../js/main.js"></script>
     
   </body>
