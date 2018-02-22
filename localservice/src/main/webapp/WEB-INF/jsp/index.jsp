@@ -17,10 +17,10 @@
               <input type="text" class="form-control datepicker" placeholder="Check-out" name="checkOut" value="<fmt:formatDate pattern="M/d/yyyy" value="${sessionScope.reservationDraft.checkOut}"/>" readonly/>              
             </div>         
             <div class="col-md-2">
-              <input type="number" min="1" max="${config.maxAdultPerBooking}" class="form-control input-numeric validate-numeric-int" placeholder="Adult" name="countAdult" value="${sessionScope.reservationDraft.countAdult}" required/>              
+              <input type="number" min="1" max="${config.maxAdultPerBooking}" class="form-control input-numeric" placeholder="Adult" name="countAdult" value="${sessionScope.reservationDraft.countAdult}" required/>              
             </div>
             <div class="col-md-2">
-              <input type="number" min="0" max="${config.maxChildrenPerBooking}" class="form-control input-numeric validate-numeric-int" placeholder="Child" name="countChildren" value="${sessionScope.reservationDraft.countChildren}" />              
+              <input type="number" min="0" max="${config.maxChildrenPerBooking}" class="form-control input-numeric" placeholder="Child" name="countChildren" value="${sessionScope.reservationDraft.countChildren}" />              
             </div>
             <div class="col-md-2">
               <button class="btn btn-primary" type="submit" id="submitButtonFromHome">Search Rooms<i class="fa fa-search mar-l-5" aria-hidden="true"></i></button>

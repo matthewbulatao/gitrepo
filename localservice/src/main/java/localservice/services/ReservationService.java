@@ -59,17 +59,17 @@ public class ReservationService extends BaseService<Reservation>{
 		return sumRooms;
 	}
 	
-	public Long getNumOfNights(Reservation reservation) {
+	public int getNumOfNights(Reservation reservation) {
 		LocalDate checkInLocal = reservation.getCheckIn().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 		LocalDate checkOutLocal = reservation.getCheckOut().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-		Long nights = ChronoUnit.DAYS.between(checkInLocal, checkOutLocal);
+		int nights = (int) ChronoUnit.DAYS.between(checkInLocal, checkOutLocal);
 		nights = nights > 0 ? nights : 1;
 		return nights;
 	}
 	
 	public double computeBooking(Reservation reservation) {
 		double result = 0.0;
-		Long nights = getNumOfNights(reservation);
+		int nights = getNumOfNights(reservation);
 		for(Room room : reservation.getRooms()) {
 			result += room.getRate() * nights;
 		}

@@ -42,6 +42,10 @@ public class Reservation implements Serializable {
 	@ManyToMany(fetch=FetchType.EAGER)
 	private List<Room> rooms;
 	private double balanceUponCheckout;
+	private String paymentMethod;
+	private double sumOfRoomRate;
+	private int numOfNights;	
+	private double vatAmount;
 	
 	@Transient
 	private String[] selectedRoomIds;
@@ -56,11 +60,27 @@ public class Reservation implements Serializable {
 	@Transient
 	private String contactNumber;
 	@Transient
-	private String email;
-	@Transient
-	private String paymentMethod;	
+	private String email;	
 	
 	
+	public double getSumOfRoomRate() {
+		return sumOfRoomRate;
+	}
+	public void setSumOfRoomRate(double sumOfRoomRate) {
+		this.sumOfRoomRate = sumOfRoomRate;
+	}
+	public int getNumOfNights() {
+		return numOfNights;
+	}
+	public void setNumOfNights(int numOfNights) {
+		this.numOfNights = numOfNights;
+	}
+	public double getVatAmount() {
+		return vatAmount;
+	}
+	public void setVatAmount(double vatAmount) {
+		this.vatAmount = vatAmount;
+	}
 	public double getBalanceUponCheckout() {
 		return balanceUponCheckout;
 	}

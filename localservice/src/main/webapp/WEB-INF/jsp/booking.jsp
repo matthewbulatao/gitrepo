@@ -1,7 +1,7 @@
 <%@include file="header.jsp" %>
 
 <div class="container mar-t-20">
-  <div class="container checkin-panel-booking <c:if test="${CURRENT_SUBMODULE == 'step3'}">invisible</c:if>">
+  <div class="container checkin-panel-booking ${CURRENT_SUBMODULE == 'step4' ? 'invisible' : ''}">
     <form class="row">            
       <div class="col-md-3">
         <label class="control-label">Check-In (<b><fmt:formatDate type="date" dateStyle="long" timeStyle="long" value="${sessionScope.reservationDraft.checkIn}"/></b>)</label>
@@ -19,15 +19,15 @@
   </div>
   
   <ol class="breadcrumb" id="stepsPanel">
-    <li><a href="booking-step1" class="btn btn-default ${CURRENT_SUBMODULE == 'step1' ? 'booking-tab-active' : ''} ${CURRENT_SUBMODULE == 'step3' ? 'disabled' : ''}"><span class="badge">1</span> Select Room</a><i class="fa fa-chevron-right bc-separator" aria-hidden="true"></i></li>
-    <li><a href="#" class="btn btn-default disabled ${CURRENT_SUBMODULE == 'step2' ? 'booking-tab-active' : ''}"><span class="badge">2</span> Payment Details</a><i class="fa fa-chevron-right bc-separator" aria-hidden="true"></i></li>
-    <li><a href="#" class="btn btn-default disabled ${CURRENT_SUBMODULE == 'step3' ? 'booking-tab-active' : ''}"><span class="badge">3</span> Confirmation</a></li>        
+    <li><a href="booking-step1" class="btn btn-default ${CURRENT_SUBMODULE == 'step1' ? 'booking-tab-active' : ''} ${CURRENT_SUBMODULE == 'step4' ? 'disabled' : ''}"><span class="badge">1</span> Select Room</a><i class="fa fa-chevron-right bc-separator" aria-hidden="true"></i></li>
+    <li><a href="booking-step2" class="btn btn-default ${CURRENT_SUBMODULE == 'step2' ? 'booking-tab-active' : ''} ${CURRENT_SUBMODULE == 'step1' || CURRENT_SUBMODULE == 'step4' ? 'disabled' : ''}"><span class="badge">2</span> Personal Details</a><i class="fa fa-chevron-right bc-separator" aria-hidden="true"></i></li>
+    <li><a href="#" class="btn btn-default disabled ${CURRENT_SUBMODULE == 'step3' ? 'booking-tab-active' : ''}"><span class="badge">3</span> Payment</a><i class="fa fa-chevron-right bc-separator" aria-hidden="true"></i></li>  
+    <li><a href="#" class="btn btn-default disabled ${CURRENT_SUBMODULE == 'step4' ? 'booking-tab-active' : ''}"><span class="badge">4</span> Confirmation</a></li>        
   </ol>
   
-  <div id="selectRoomTab" class="<c:if test="${CURRENT_SUBMODULE != 'step1'}">invisible</c:if>">
+  <!-- SELECT ROOMS -->
+  <div class="${CURRENT_SUBMODULE != 'step1' ? 'invisible' : ''}">
     <form action="booking-step2" method="POST">
-      
-      <%@include file="hidden-booking-info.jsp" %>
       
       <div class="list-group">
         <c:forEach var="room" items="${availableRooms}">
@@ -66,17 +66,16 @@
         </c:forEach>
       </div>
       <div class="col-md-12" style="margin-bottom:80px;">
-        <button type="submit" class="btn btn-primary pull-right mar-t-20 mar-l-10 btnProceedToPayment" style="margin-right:-15px;">Proceed to Payment <i class="fa fa-credit-card-alt" aria-hidden="true"></i></button>
+        <button type="submit" class="btn btn-primary pull-right mar-t-20 mar-l-10 btnProceedToPayment" style="margin-right:-15px;">Proceed <i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
         <a href="/" class="btn btn-primary pull-right mar-t-20 mar-r-10">Back to Home <i class="fa fa-undo" aria-hidden="true"></i></a>
       </div>
     </form>    
   </div>
 
-  <div id="paymentTab" class="<c:if test="${CURRENT_SUBMODULE != 'step2'}">invisible</c:if>">
-    <form action="booking-step3" method="POST" id="formPayment">
+  <!-- PERSONAL DETAILS -->
+  <div class="${CURRENT_SUBMODULE != 'step2' ? 'invisible' : ''}">
+    <form action="booking-step3" method="POST">
     
-      <%@include file="hidden-booking-info.jsp" %>
-          
       <div class="container checkin-panel-booking">
         <h4>Personal Information</h4>
         <div class="form-horizontal mar-t-20">
@@ -84,32 +83,43 @@
             <div class="col-md-1"></div>
             <label class="form-label col-md-2">*First Name</label>
             <div class="col-md-5">
-              <input type="text" class="form-control validate-alphabetic" name="firstName" maxlength="25" pattern="[a-zA-Z ]{2,25}" title="letters and space only (2-25 chars)" required>
+              <input type="text" class="form-control validate-alphabetic" value="${reservationDraft.mainGuest.firstName}" name="firstName" maxlength="25" pattern="[a-zA-Z ]{2,25}" title="letters and space only (2-25 chars)" required>
             </div>
           </div>
           <div class="form-group row">
             <div class="col-md-1"></div>
             <label class="form-label col-md-2">*Last Name</label>
             <div class="col-md-5">
-              <input type="text" class="form-control validate-alphabetic" name="lastName" maxlength="25" pattern="[a-zA-Z ]{2,25}" title="letters and space only (2-25 chars)" required>
+              <input type="text" class="form-control validate-alphabetic" value="${reservationDraft.mainGuest.lastName}" name="lastName" maxlength="25" pattern="[a-zA-Z ]{2,25}" title="letters and space only (2-25 chars)" required>
             </div>
           </div>
           <div class="form-group row">
             <div class="col-md-1"></div>
             <label class="form-label col-md-2">*Email</label>
             <div class="col-md-5">
-              <input type="email" class="form-control" name="email" placeholder="ex: user@gmail.com" maxlength="50" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,3}$" title="ex: user@gmail.com" required>
+              <input type="email" class="form-control" name="email" value="${reservationDraft.mainGuest.email}" placeholder="ex: user@gmail.com" maxlength="50" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,3}$" title="ex: user@gmail.com" required>
             </div>
           </div>
           <div class="form-group row">
             <div class="col-md-1"></div>
             <label class="form-label col-md-2">*Mobile Number</label>
             <div class="col-md-5">
-              <input type="text" class="form-control validate-numeric-int" name="contactNumber" placeholder="ex: 09335558888" maxlength="11" pattern="09\d{9}" title="numbers only starting at 09 (11 digits)" required>
+              <input type="text" class="form-control validate-numeric-int" name="contactNumber" value="${reservationDraft.mainGuest.contactNumber}" placeholder="ex: 09335558888" maxlength="11" pattern="09\d{9}" title="numbers only starting at 09 (11 digits)" required>
             </div>
           </div>          
         </div>
       </div>
+      <div class="col-md-12" style="margin-bottom:80px;">
+        <button type="submit" class="btn btn-primary pull-right mar-l-10 mar-t-20" style="margin-right:-15px;" id="btnValidatePersonal">Proceed to Payment <i class="fa fa-credit-card-alt" aria-hidden="true"></i></button>
+        <a href="booking-step1" class="btn btn-primary pull-right mar-t-20 mar-r-10">Back to Rooms <i class="fa fa-undo" aria-hidden="true"></i></a>
+      </div>            
+    </form>    
+  </div>
+  
+  <!-- PAYMENT -->
+  <div class="${CURRENT_SUBMODULE != 'step3' ? 'invisible' : ''}">
+    <form action="booking-step4" method="POST" id="formPayment">    
+      
       <div class="container mar-t-20">
         <h4>Payment Method</h4>
       </div>      
@@ -131,25 +141,22 @@
                 </span>
               </div>              
             </div>
-            <!-- <div class="col-md-6">
-              <div id="paypal-button" class="pull-right"></div>
-            </div> -->
-            <input type="hidden" id="dpAmountForPaypal" value="${dpAmount}"/>
+            <input type="hidden" id="dpAmountForPaypal" value="${reservationDraft.dpAmount}"/>
             <div class="col-md-6">
               <span class="pull-right text-right">
-                Room(s) Rate = &#8369; <fmt:formatNumber type="number" pattern="#,###.00" value="${sumOfRoomRate}" />
+                Room(s) Rate = &#8369; <fmt:formatNumber type="number" pattern="#,###.00" value="${reservationDraft.sumOfRoomRate}" />
                 <br>
                 x
                 <br>
-                Night(s) = ${numOfNights}
+                Night(s) = ${reservationDraft.numOfNights}
                 <br>
                 <hr>
                 Total Amount = &#8369; <fmt:formatNumber type="number" pattern="#,###.00" value="${reservationDraft.totalAmount}" />
                 <br>
-                VAT (${config.vatPercentage}%) = &#8369; <fmt:formatNumber type="number" pattern="#,###.00" value="${vatAmount}" />
+                VAT (${config.vatPercentage}%) = &#8369; <fmt:formatNumber type="number" pattern="#,###.00" value="${reservationDraft.vatAmount}" />
                 <br>
                 <hr>
-                Reservation (${config.downPaymentPercentage}%) = <b>&#8369; <fmt:formatNumber type="number" pattern="#,###.00" value="${dpAmount}" /></b>
+                Reservation (${config.downPaymentPercentage}%) = <b>&#8369; <fmt:formatNumber type="number" pattern="#,###.00" value="${reservationDraft.dpAmount}" /></b>
               </span>
             </div>
           </div>
@@ -158,12 +165,12 @@
       <div class="col-md-12" style="margin-bottom:80px;">
         <div id="paypal-button" class="pull-right mar-l-10 mar-t-20"></div>
         <button type="submit" class="btn btn-primary pull-right mar-l-10 mar-t-20 invisible" style="margin-right:-15px;" id="btnProceedConfirm">Proceed to Confirmation <i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
-        <a href="booking-step1" class="btn btn-primary pull-right mar-t-20 mar-r-10">Back to Rooms <i class="fa fa-undo" aria-hidden="true"></i></a>
-      </div>
+        <a href="booking-step2" class="btn btn-primary pull-right mar-t-20 mar-r-10">Back to Personal Details <i class="fa fa-undo" aria-hidden="true"></i></a>
+      </div>           
     </form>    
   </div>
   
-  <div id="confirmationTab" class="<c:if test="${CURRENT_SUBMODULE != 'step3'}">invisible</c:if>">
+  <div id="confirmationTab" class="${CURRENT_SUBMODULE != 'step4' ? 'invisible' : ''}">
     <div class="container checkin-panel-booking">
       <div class="row">
         <div class="col-md-12">
@@ -217,18 +224,18 @@
             <br>
             <span id="bookingStatus">${reservationSubmitted.status}</span>
             <br>
-            Room(s) Rate = &#8369; <fmt:formatNumber type="number" pattern="#,###.00" value="${sumOfRoomRate}" />
+            Room(s) Rate = &#8369; <fmt:formatNumber type="number" pattern="#,###.00" value="${reservationSubmitted.sumOfRoomRate}" />
             <br>
             x
             <br>
-            Night(s) = ${numOfNights}
+            Night(s) = ${reservationSubmitted.numOfNights}
             <br>
             Total Amount = &#8369; <fmt:formatNumber type="number" pattern="#,###.00" value="${reservationSubmitted.totalAmount}" />
             <br>
-            VAT (${config.vatPercentage}%) = &#8369; <fmt:formatNumber type="number" pattern="#,###.00" value="${vatAmount}" />
+            VAT (${config.vatPercentage}%) = &#8369; <fmt:formatNumber type="number" pattern="#,###.00" value="${reservationSubmitted.vatAmount}" />
             <br>
             <hr>
-            Reservation (${config.downPaymentPercentage}%) = <b>&#8369; <fmt:formatNumber type="number" pattern="#,###.00" value="${dpAmount}" /></b>
+            Reservation (${config.downPaymentPercentage}%) = <b>&#8369; <fmt:formatNumber type="number" pattern="#,###.00" value="${reservationSubmitted.dpAmount}" /></b>
           </span>
         </div>
       </div>

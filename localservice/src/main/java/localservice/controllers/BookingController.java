@@ -43,8 +43,9 @@ public class BookingController extends BaseController {
 	@Autowired
 	private ApplicationPropertiesService applicationPropertiesService;
 	
+	//BACK TO SELECT ROOMS
 	@GetMapping("/booking-step1")
-	public String bookingFromMenu(HttpServletRequest request) {
+	public String bookingStep1Back(HttpServletRequest request) {
 		setModuleInSession(request, "booking", "step1");
 		Object resObj = request.getSession().getAttribute("reservationDraft");
 		if(null != resObj) {
@@ -56,6 +57,7 @@ public class BookingController extends BaseController {
 		}		
 	}
 
+	//AFTER SELECT DATES
 	@PostMapping("/booking-step1")
 	public String bookingStep1(@ModelAttribute Reservation reservationForm, BindingResult bindingResult, HttpServletRequest request) {
 		setModuleInSession(request, "booking", "step1");
@@ -64,68 +66,81 @@ public class BookingController extends BaseController {
 		return "booking";
 	}
 	
+	//BACK TO PERSONAL INFO
+	@GetMapping("/booking-step2")
+	public String bookingStep2Back(HttpServletRequest request) {
+		setModuleInSession(request, "booking", "step2");
+		Object resObj = request.getSession().getAttribute("reservationDraft");
+		if(null != resObj) {
+			return "booking";
+		}else {
+			return "redirect:index";
+		}		
+	}
+	
+	//AFTER SELECT ROOMS
 	@PostMapping("/booking-step2")
 	public String bookingStep2(@ModelAttribute Reservation reservationForm, BindingResult bindingResult, HttpServletRequest request) {
 		setModuleInSession(request, "booking", "step2");
+		Reservation reservationDraft = (Reservation) request.getSession().getAttribute("reservationDraft");
 		List<Room> selectedRooms = roomService.findByIds(Arrays.asList(reservationForm.getSelectedRoomIds()).stream().map(Integer::parseInt).collect(Collectors.toList()));
 		request.getSession().setAttribute("selectedRoomIds", reservationForm.getSelectedRoomIds());
-		reservationForm.setRooms(selectedRooms);
-		double totalAmount = reservationService.computeBooking(reservationForm);
-		reservationForm.setTotalAmount(totalAmount);
-		request.getSession().setAttribute("sumOfRoomRate", reservationService.getSumOfRoomRate(selectedRooms));	
-		request.getSession().setAttribute("numOfNights", reservationService.getNumOfNights(reservationForm));
-		request.getSession().setAttribute("dpAmount", reservationService.getDownPaymentAmount(totalAmount));
-		request.getSession().setAttribute("vatAmount", reservationService.getVatAmount(totalAmount));	
-		request.getSession().setAttribute("reservationDraft", reservationForm);		
+		reservationDraft.setRooms(selectedRooms);
+		double totalAmount = reservationService.computeBooking(reservationDraft);
+		reservationDraft.setTotalAmount(totalAmount);
+		reservationDraft.setSumOfRoomRate(reservationService.getSumOfRoomRate(selectedRooms));	
+		reservationDraft.setNumOfNights(reservationService.getNumOfNights(reservationDraft));
+		reservationDraft.setDpAmount(reservationService.getDownPaymentAmount(totalAmount));
+		reservationDraft.setVatAmount(reservationService.getVatAmount(totalAmount));
 		
-		request.setAttribute("renderPaypal", true);
+		request.getSession().setAttribute("reservationDraft", reservationDraft);
 		request.setAttribute("config", applicationPropertiesService.findLatestConfig());
 		return "booking";
 	}
 	
-	//TODO remove this
-//	@GetMapping("/booking-step2")
-//	public String bookingStep2Test(HttpServletRequest request) {
-//		setModuleInSession(request, "booking", "step2");
-//		return "booking";
-//	}
-	
+	//AFTER PERSONAL DETAILS
 	@PostMapping("/booking-step3")
 	public String bookingStep3(@ModelAttribute Reservation reservationForm, BindingResult bindingResult, HttpServletRequest request) {
 		setModuleInSession(request, "booking", "step3");		
-		Reservation reservationDraftInSession = (Reservation) request.getSession().getAttribute("reservationDraft");
-		double dpAmount = reservationService.getDownPaymentAmount(reservationDraftInSession.getTotalAmount());
-		request.getSession().setAttribute("sumOfRoomRate", reservationService.getSumOfRoomRate(reservationDraftInSession.getRooms()));	
-		request.getSession().setAttribute("numOfNights", reservationService.getNumOfNights(reservationDraftInSession));
-		request.getSession().setAttribute("dpAmount", dpAmount);
-		request.getSession().setAttribute("vatAmount", reservationService.getVatAmount(reservationDraftInSession.getTotalAmount()));
-		
-		request.setAttribute("config", applicationPropertiesService.findLatestConfig());
-		
-		reservationDraftInSession.setDpAmount(dpAmount);
-		reservationDraftInSession.setReferenceId(reservationService.generateReferenceId());
-		reservationDraftInSession.setPaymentMethod(reservationForm.getPaymentMethod());
-		reservationDraftInSession.setMainGuest(saveGuest(reservationForm));
+		Reservation reservationDraft = (Reservation) request.getSession().getAttribute("reservationDraft");		
+		request.setAttribute("config", applicationPropertiesService.findLatestConfig());		
+		reservationDraft.setMainGuest(extractGuest(reservationForm));
+		request.getSession().setAttribute("reservationDraft", reservationDraft);
+		request.setAttribute("renderPaypal", true);		
+		return "booking";
+	}
+	
+	@PostMapping("/booking-step4")
+	public String bookingStep4(@ModelAttribute Reservation reservationForm, BindingResult bindingResult, HttpServletRequest request) {
+		setModuleInSession(request, "booking", "step4");		
+		Reservation reservationDraft = (Reservation) request.getSession().getAttribute("reservationDraft");
+		request.setAttribute("config", applicationPropertiesService.findLatestConfig());		
+		reservationDraft.setReferenceId(reservationService.generateReferenceId());
+		reservationDraft.setPaymentMethod(reservationForm.getPaymentMethod());
+		reservationDraft.setMainGuest(saveGuest(reservationDraft.getMainGuest()));
 		if(StringUtils.equalsIgnoreCase(Consts.PAYMENT_METHOD_BANK, reservationForm.getPaymentMethod())) {
-			reservationDraftInSession.setStatus(BookingStatus.PENDING.toString());
+			reservationDraft.setStatus(BookingStatus.PENDING.toString());
 		}else if(StringUtils.equalsIgnoreCase(Consts.PAYMENT_METHOD_PAYPAL, reservationForm.getPaymentMethod())) {
-			reservationDraftInSession.setStatus(BookingStatus.CONFIRMED.toString());
+			reservationDraft.setStatus(BookingStatus.CONFIRMED.toString());
 		}		
-		Reservation reservationSubmitted = reservationService.saveOrUpdate(reservationDraftInSession);
+		Reservation reservationSubmitted = reservationService.saveOrUpdate(reservationDraft);
 		reservationService.sendReservationEmail(reservationSubmitted);
-		request.setAttribute("reservationSubmitted", reservationSubmitted);	
-		
+		request.setAttribute("reservationSubmitted", reservationSubmitted);
 		request.getSession().removeAttribute("reservationDraft");
 		request.getSession().removeAttribute("selectedRoomIds");
 		return "booking";
 	}
 	
-	private Guest saveGuest(Reservation reservationForm) {
+	private Guest extractGuest(Reservation reservationForm) {
 		Guest guest = new Guest();
 		guest.setFirstName(reservationForm.getFirstName());
 		guest.setLastName(reservationForm.getLastName());
 		guest.setContactNumber(reservationForm.getContactNumber());
 		guest.setEmail(reservationForm.getEmail());
+		return guest;
+	}
+	
+	private Guest saveGuest(Guest guest) {
 		guestService.saveOrUpdate(guest);
 		return guest;
 	}

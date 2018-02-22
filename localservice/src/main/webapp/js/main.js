@@ -10,17 +10,6 @@ function showMessage(_type,_message){
 	});
 }
 
-function validatePaymentForm(){
-	$('#paymentForm :input:visible[required="required"]').each(function(){
-	    if(!this.validity.valid)
-	    {
-	        $(this).focus();
-	        return false;
-	    }
-	});
-	return true;
-}
-
 function renderPaypalButton(){
 	console.log('rendering paypal button...');
 	$('#paypal-button').empty();
@@ -36,17 +25,15 @@ function renderPaypalButton(){
         	production: 'Adg8Nm4JiurJjBNVOCLSJXsUehmrcaTmnVSxauW5uC0llMUoN6LVHhTAyUIFi5PfUlgb3vcbhBlEsGVr'
         },
         payment: function(data, actions) {
-        	if(validatePaymentForm()){
-        		return actions.payment.create({
-                    payment: {
-                        transactions: [
-                            {
-                                amount: { total: $('#dpAmountForPaypal').val(), currency: 'PHP' }
-                            }
-                        ]
-                    }
-                });
-        	}        	
+        	return actions.payment.create({
+                payment: {
+                    transactions: [
+                        {
+                            amount: { total: $('#dpAmountForPaypal').val(), currency: 'PHP' }
+                        }
+                    ]
+                }
+            });        	
         },
         onAuthorize: function(data, actions) {
         	console.log('reservation payment authorized via paypal');
@@ -167,12 +154,7 @@ $(document).ready(function() {
     		}   		
     	}    	
     });
-    $('#btnProceedConfirm').click(function(){
-//    	if($('input[name=email]').val()==""){
-//    		showMessage('danger','<strong>Sorry</strong>, please specify your Email');
-//    		return false;
-//    	}
-    	
+    $('#btnValidatePersonal').click(function(){    	
     	if($('input[name=firstName]').val()!="" && $('input[name=firstName]').val().trim().length < 2){
     		showMessage('danger','<strong>Sorry</strong>, invalid first name format (alphabetic 2-25 chars)');
     		return false;
@@ -181,22 +163,13 @@ $(document).ready(function() {
     		showMessage('danger','<strong>Sorry</strong>, invalid last name format (alphabetic 2-25 chars)');
     		return false;
     	}
-//    	if($('input[name=contactNumber]').val()==""){
-//    		showMessage('danger','<strong>Sorry</strong>, please specify your contact number');
-//    		return false;
-//    	}
     });
     
     $(".validate-alphabetic").limitkeypress({ rexp: /^[A-Za-z ]*$/ });
     $(".validate-alphanumeric").limitkeypress({ rexp: /^[A-Za-z0-9 ]*$/ });
     $(".validate-numeric-int").limitkeypress({ rexp: /^[0-9]*$/ });
     $(".validate-numeric-float").limitkeypress({ rexp: /^[0-9.]*$/ });
-    
-//    $("a.force-redirect").click(function(){
-//    	var href = $(this).attr('href');
-//    	window.location = "/" + href;
-//    });
-    
+       
     $('input[name=password]').change(function(){
     	$(this).attr('maxlength','15');
     	$(this).attr('pattern','.{8,15}');
@@ -264,5 +237,6 @@ $(document).ready(function() {
     });
     if($('#renderPaypal').val()){
     	renderPaypalButton();
-    }
+    } 
+    
 });
