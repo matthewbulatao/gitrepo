@@ -238,5 +238,23 @@ $(document).ready(function() {
     if($('#renderPaypal').val()){
     	renderPaypalButton();
     } 
-    
+    $('#itemDescriptionAmenities').change(function(){
+    	if($(this).val() != ''){
+    		$('input[name=itemDescription]').val($(this).val().split('-SEPARATOR-')[0]);
+        	$('input[name=rate]').val($(this).val().split('-SEPARATOR-')[1]);    		
+    	}    	
+    });
+    $('input#itemDescriptionCustom').change(function(){
+    	if($(this).val() != ''){
+    		$('#itemDescriptionAmenities').val('');
+    		$('input[name=itemDescription]').val($(this).val());
+        	$('input[name=rate]').val('');
+    	}    	
+    });
+    $('#btnAddCharge').click(function(){
+    	if($('input[name=itemDescription]').val()==''){
+    		showMessage('danger','<strong>Sorry</strong>, please choose an amenity or put custom description for the additional charges');
+    		return false;
+    	}
+    });
 });

@@ -4,13 +4,15 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
@@ -33,12 +35,10 @@ public class Reservation implements Serializable {
 	private String remarks;
 	private double totalAmount;
 	private double dpAmount;
-	@ManyToMany
-	private List<Miscellaneous> amenities;
-	@ManyToOne
-	private Guest mainGuest;
-	private String extraChargeDescription;
-	private double extraChargeAmount;
+	@OneToMany(cascade=CascadeType.ALL, orphanRemoval=true)
+	private List<AdditionalCharge> additionalCharges;
+	@OneToOne
+	private Guest mainGuest;	
 	@ManyToMany(fetch=FetchType.EAGER)
 	private List<Room> rooms;
 	private double balanceUponCheckout;
@@ -46,6 +46,7 @@ public class Reservation implements Serializable {
 	private double sumOfRoomRate;
 	private int numOfNights;	
 	private double vatAmount;
+	private String email;
 	
 	@Transient
 	private String[] selectedRoomIds;
@@ -58,9 +59,7 @@ public class Reservation implements Serializable {
 	@Transient
 	private String lastName;
 	@Transient
-	private String contactNumber;
-	@Transient
-	private String email;	
+	private String contactNumber;	
 	
 	
 	public double getSumOfRoomRate() {
@@ -200,24 +199,12 @@ public class Reservation implements Serializable {
 	}
 	public void setMainGuest(Guest mainGuest) {
 		this.mainGuest = mainGuest;
-	}	
-	public List<Miscellaneous> getAmenities() {
-		return amenities;
 	}
-	public void setAmenities(List<Miscellaneous> amenities) {
-		this.amenities = amenities;
+	public List<AdditionalCharge> getAdditionalCharges() {
+		return additionalCharges;
 	}
-	public String getExtraChargeDescription() {
-		return extraChargeDescription;
-	}
-	public void setExtraChargeDescription(String extraChargeDescription) {
-		this.extraChargeDescription = extraChargeDescription;
-	}
-	public double getExtraChargeAmount() {
-		return extraChargeAmount;
-	}
-	public void setExtraChargeAmount(double extraChargeAmount) {
-		this.extraChargeAmount = extraChargeAmount;
+	public void setAdditionalCharges(List<AdditionalCharge> additionalCharges) {
+		this.additionalCharges = additionalCharges;
 	}
 	public String[] getSelectedAmenitiesIds() {
 		return selectedAmenitiesIds;

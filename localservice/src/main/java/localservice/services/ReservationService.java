@@ -119,6 +119,10 @@ public class ReservationService extends BaseService<Reservation>{
 		return this.reservationRepository.findOneByReferenceId(referenceId);
 	}
 	
+	public List<Reservation> findAllByEmail(String email) {
+		return this.reservationRepository.findAllByEmail(email);
+	}
+	
 	public double computeBalanceForCheckout(Reservation reservation) {
 		return reservation.getTotalAmount() - reservation.getDpAmount(); //add here additional charges (amenities, extras)
 	}

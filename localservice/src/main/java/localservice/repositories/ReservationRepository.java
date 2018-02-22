@@ -18,4 +18,6 @@ public interface ReservationRepository extends CrudRepository<Reservation, Integ
 	public List<Reservation> findAllByCheckInAndCheckOut(Date checkIn, Date checkOut);
 	
 	public Reservation findOneByReferenceId(String referenceId);
+
+	public List<Reservation> findAllByEmail(String email);
 }

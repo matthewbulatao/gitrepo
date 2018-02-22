@@ -30,8 +30,9 @@ INSERT INTO ROOM(name,type,code,capacity,capacity_children,rate,status,descripti
 INSERT INTO ROOM(name,type,code,capacity,capacity_children,rate,status,description) VALUES('Suite Dorm Room','DORM ROOM','7DOR1',7,2,1200.00,'A','1 queen size bed + 1 double-deck and air-conditioning');
 INSERT INTO ROOM(name,type,code,capacity,capacity_children,rate,status,description) VALUES('Deluxe Dorm Room','DORM ROOM','10DOR1',10,2,1500.00,'A','3 double-deck beds and air-conditioning');
 
-INSERT INTO MISCELLANEOUS(code,name,rate) VALUES('MISC_KARA','Karaoke',300);
-INSERT INTO MISCELLANEOUS(code,name,rate) VALUES('MISC_BASK','Basketball Court',100);
-INSERT INTO MISCELLANEOUS(code,name,rate) VALUES('MISC_EXTR','Extra Matress',100);
-INSERT INTO MISCELLANEOUS(code,name,rate) VALUES('MISC_BARB','Barbeque Grill',0);
+INSERT INTO MISCELLANEOUS(code,name,rate) VALUES('MISC_FUNC','Function Hall (Villa - I)',1000);
+INSERT INTO MISCELLANEOUS(code,name,rate) VALUES('MISC_BOWL','Bowling Lane',200);
+INSERT INTO MISCELLANEOUS(code,name,rate) VALUES('MISC_OPEN','Open Area (Villa - II)',500);
+INSERT INTO MISCELLANEOUS(code,name,rate) VALUES('MISC_BEAC','Beach Volleyball Area',100);
+INSERT INTO MISCELLANEOUS(code,name,rate) VALUES('MISC_BILL','Billiards',100);
 INSERT INTO MISCELLANEOUS(code,name,rate) VALUES('MISC_CHAR','Charcoal',20);

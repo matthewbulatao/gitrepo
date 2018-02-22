@@ -118,9 +118,11 @@
                     <td>${reservation.status}</td>
                     <td>&#8369; <fmt:formatNumber type="number" pattern="#,###.00" value="${reservation.totalAmount}" /></td>  
                     <td>
-                      <div class="text-center row">
-                        <a href="admin-reservations-edit?referenceId=${reservation.referenceId}" class="pad-r-10" title="Edit"><i class="fa fa-pencil" aria-hidden="true"></i></a>
-                      </div>                    
+                      <c:if test="${reservation.status != 'CHECKED_OUT'}">
+                        <div class="text-center row">
+                          <a href="admin-reservations-edit?referenceId=${reservation.referenceId}" class="pad-r-10" title="Edit"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                        </div>
+                      </c:if>                                          
                     </td>                             
                   </tr>
                 </c:forEach>

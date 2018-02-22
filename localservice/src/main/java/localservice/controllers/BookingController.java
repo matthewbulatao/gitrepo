@@ -105,6 +105,7 @@ public class BookingController extends BaseController {
 		Reservation reservationDraft = (Reservation) request.getSession().getAttribute("reservationDraft");		
 		request.setAttribute("config", applicationPropertiesService.findLatestConfig());		
 		reservationDraft.setMainGuest(extractGuest(reservationForm));
+		reservationDraft.setEmail(reservationForm.getEmail());
 		request.getSession().setAttribute("reservationDraft", reservationDraft);
 		request.setAttribute("renderPaypal", true);		
 		return "booking";

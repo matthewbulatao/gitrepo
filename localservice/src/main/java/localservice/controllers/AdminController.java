@@ -1,11 +1,13 @@
 package localservice.controllers;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import localservice.models.AdditionalCharge;
 import localservice.models.ApplicationProperties;
 import localservice.models.BookingStatus;
 import localservice.models.Miscellaneous;
@@ -61,23 +64,56 @@ public class AdminController extends BaseController {
 	}
 	
 	@GetMapping("/admin-manage-booking-retrieve")
-	public String adminManageBookingRetrieve(@RequestParam String referenceId, HttpServletRequest request) {
-		Reservation reservation = reservationService.findOneByReferenceId(referenceId.trim());
-		request.setAttribute("miscellaneousList", miscellaneousService.findAll());
-		request.setAttribute("savedBooking", reservation);
+	public String adminManageBookingRetrieve(@RequestParam(required=false) String referenceId, @RequestParam(required=false) String email, HttpServletRequest request) {
+		Reservation reservation = null;
+		if(StringUtils.isNoneBlank(referenceId)) {
+			reservation = reservationService.findOneByReferenceId(referenceId.trim());
+			request.setAttribute("miscellaneousList", miscellaneousService.findAll());
+			request.setAttribute("savedBooking", reservation);
+		}else if(StringUtils.isNoneBlank(email)) {
+			List<Reservation> reservationList = reservationService.findAllByEmail(email.trim());
+			request.setAttribute("savedBookingList", reservationList);
+		}
 		return "admin-manage-booking";
 	}
 	
-	@PostMapping("/admin-manage-booking-save")
-	public String adminManageBookingSave(@ModelAttribute Reservation reservationForm, BindingResult bindingResult, HttpServletRequest request) {
-		Reservation reservation = reservationService.findOneByReferenceId(reservationForm.getReferenceId().trim());
-		List<Miscellaneous> amenities = miscellaneousService.findByIds(Arrays.asList(reservationForm.getSelectedAmenitiesIds()).stream().map(Integer::parseInt).collect(Collectors.toList()));
-		reservation.setAmenities(amenities);
-		reservation.setExtraChargeDescription(reservationForm.getExtraChargeDescription());
-		reservation.setExtraChargeAmount(reservationForm.getExtraChargeAmount());
-		reservationService.saveOrUpdate(reservation);
-		return "redirect:admin-manage-booking";
+	@PostMapping("/admin-manage-booking-add-charge")
+	public String adminManageBookingAddCharge(@ModelAttribute AdditionalCharge addChargeForm, BindingResult bindingResult, HttpServletRequest request) {
+		Reservation savedBooking = reservationService.findOneByReferenceId(addChargeForm.getReferenceId());
+		if(null == savedBooking.getAdditionalCharges()) {
+			savedBooking.setAdditionalCharges(new ArrayList<>());
+		}
+		savedBooking.getAdditionalCharges().add(addChargeForm);
+		reservationService.saveOrUpdate(savedBooking);
+		return "redirect:admin-manage-booking-retrieve?referenceId="+addChargeForm.getReferenceId();
 	}
+	
+	@PostMapping("/admin-manage-booking-delete-charge")
+	public String adminManageBookingDeleteCharge(@ModelAttribute AdditionalCharge addChargeForm, BindingResult bindingResult, HttpServletRequest request) {
+		Reservation savedBooking = reservationService.findOneByReferenceId(addChargeForm.getReferenceId());
+		if(null != savedBooking.getAdditionalCharges()) {
+			List<AdditionalCharge> existingCharges = savedBooking.getAdditionalCharges();
+			for(AdditionalCharge charge : existingCharges) {
+				if(charge.getId() == addChargeForm.getId()) {
+					existingCharges.remove(charge);
+					break;
+				}
+			}
+			reservationService.saveOrUpdate(savedBooking);
+		}		
+		return "redirect:admin-manage-booking-retrieve?referenceId="+addChargeForm.getReferenceId();
+	}
+	
+//	@PostMapping("/admin-manage-booking-save")
+//	public String adminManageBookingSave(@ModelAttribute Reservation reservationForm, BindingResult bindingResult, HttpServletRequest request) {
+//		Reservation reservation = reservationService.findOneByReferenceId(reservationForm.getReferenceId().trim());
+//		List<Miscellaneous> amenities = miscellaneousService.findByIds(Arrays.asList(reservationForm.getSelectedAmenitiesIds()).stream().map(Integer::parseInt).collect(Collectors.toList()));
+//		reservation.setAmenities(amenities);
+//		reservation.setExtraChargeDescription(reservationForm.getExtraChargeDescription());
+//		reservation.setExtraChargeAmount(reservationForm.getExtraChargeAmount());
+//		reservationService.saveOrUpdate(reservation);
+//		return "redirect:admin-manage-booking";
+//	}
 	
 	@PostMapping("/admin-manage-booking-checkout")
 	public String adminManageBookingCheckout(@ModelAttribute Reservation reservationForm, BindingResult bindingResult, HttpServletRequest request) {
