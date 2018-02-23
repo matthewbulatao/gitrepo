@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import localservice.models.ContactForm;
+import localservice.restcontrollers.RoomRestController;
 import localservice.services.ApplicationPropertiesService;
 import localservice.services.MailService;
 import localservice.services.MiscellaneousService;
@@ -38,6 +39,8 @@ public class HomeController extends BaseController {
 	private ApplicationPropertiesService applicationPropertiesService;
 	@Autowired
 	private MailService mailService;
+	@Autowired
+	private RoomRestController roomRestController;
 	
 	private SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 	
@@ -45,7 +48,8 @@ public class HomeController extends BaseController {
 	public String home(HttpServletRequest request) {
 		setModuleInSession(request, StringUtils.EMPTY, null);
 		request.setAttribute("config", applicationPropertiesService.findLatestConfig());
-		request.setAttribute("dateToday", formatter.format(new Date()));		
+		request.setAttribute("dateToday", formatter.format(new Date()));	
+		roomRestController.releaseRoomsWithSessionId(request.getSession().getId());
 		return "index";
 	}
 	

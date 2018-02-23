@@ -1,4 +1,5 @@
 <%@include file="header.jsp" %>
+<%@include file="hidden-booking-info.jsp" %>
 
 <div class="container mar-t-20">
   <div class="container checkin-panel-booking ${CURRENT_SUBMODULE == 'step4' ? 'invisible' : ''}">
@@ -19,7 +20,7 @@
   </div>
   
   <ol class="breadcrumb" id="stepsPanel">
-    <li><a href="booking-step1" class="btn btn-default ${CURRENT_SUBMODULE == 'step1' ? 'booking-tab-active' : ''} ${CURRENT_SUBMODULE == 'step4' ? 'disabled' : ''}"><span class="badge">1</span> Select Room</a><i class="fa fa-chevron-right bc-separator" aria-hidden="true"></i></li>
+    <li><a href="booking-step1" class="btn btn-default ${CURRENT_SUBMODULE == 'step1' ? 'booking-tab-active' : ''} ${CURRENT_SUBMODULE == 'step4' ? 'disabled' : ''}" id="btnSelectRoomsMenu"><span class="badge">1</span> Select Room</a><i class="fa fa-chevron-right bc-separator" aria-hidden="true"></i></li>
     <li><a href="booking-step2" class="btn btn-default ${CURRENT_SUBMODULE == 'step2' ? 'booking-tab-active' : ''} ${CURRENT_SUBMODULE == 'step1' || CURRENT_SUBMODULE == 'step4' ? 'disabled' : ''}"><span class="badge">2</span> Personal Details</a><i class="fa fa-chevron-right bc-separator" aria-hidden="true"></i></li>
     <li><a href="#" class="btn btn-default disabled ${CURRENT_SUBMODULE == 'step3' ? 'booking-tab-active' : ''}"><span class="badge">3</span> Payment</a><i class="fa fa-chevron-right bc-separator" aria-hidden="true"></i></li>  
     <li><a href="#" class="btn btn-default disabled ${CURRENT_SUBMODULE == 'step4' ? 'booking-tab-active' : ''}"><span class="badge">4</span> Confirmation</a></li>        
@@ -58,7 +59,7 @@
               <div class="media-right mar-l-20">
                 <h4>&#8369; <fmt:formatNumber type="number" pattern="#,###" value="${room.rate}" /></h4>
                 <c:if test="${room.conflicts == null}">
-                  <label class="form-check-label"><input type="checkbox" class="form-check-input big-checkbox ${room.conflicts != null ? 'disabled' : ''}" name="selectedRoomIds" value="${room.id}" ${(room.selected && room.conflicts == null) ? 'checked' : ''}/>&nbsp;Select Room</label>
+                  <label class="form-check-label"><input type="checkbox" class="form-check-input big-checkbox select-room-checkbox ${room.conflicts != null ? 'disabled' : ''}" name="selectedRoomIds" id="selectedRoomIds_${room.id}" value="${room.id}" />&nbsp;Select Room</label>
                 </c:if>                
               </div>
             </div>
@@ -66,7 +67,7 @@
         </c:forEach>
       </div>
       <div class="col-md-12" style="margin-bottom:80px;">
-        <button type="submit" class="btn btn-primary pull-right mar-t-20 mar-l-10 btnProceedToPayment" style="margin-right:-15px;">Proceed <i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
+        <button type="submit" class="btn btn-primary pull-right mar-t-20 mar-l-10" id="btnProceedToPersonal" style="margin-right:-15px;">Proceed <i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
         <a href="/" class="btn btn-primary pull-right mar-t-20 mar-r-10">Back to Home <i class="fa fa-undo" aria-hidden="true"></i></a>
       </div>
     </form>    
@@ -151,9 +152,15 @@
                 Night(s) = ${reservationDraft.numOfNights}
                 <br>
                 <hr>
+                <c:if test="${config.onlineBookingDiscount > 0}">
+                  Room(s) Amount = &#8369; <fmt:formatNumber type="number" pattern="#,###.00" value="${reservationDraft.totalAmountRooms}" />
+                  <br>
+                  Online Discount = &#8369; (<fmt:formatNumber type="number" pattern="#,###.00" value="${reservationDraft.onlineBookingDiscount}" />)
+                  <br>
+                </c:if>
                 Total Amount = &#8369; <fmt:formatNumber type="number" pattern="#,###.00" value="${reservationDraft.totalAmount}" />
-                <br>
-                VAT (${config.vatPercentage}%) = &#8369; <fmt:formatNumber type="number" pattern="#,###.00" value="${reservationDraft.vatAmount}" />
+                <br>                
+                VAT (${config.vatPercentage}%) inclusive = &#8369; <fmt:formatNumber type="number" pattern="#,###.00" value="${reservationDraft.vatAmount}" />
                 <br>
                 <hr>
                 Reservation (${config.downPaymentPercentage}%) = <b>&#8369; <fmt:formatNumber type="number" pattern="#,###.00" value="${reservationDraft.dpAmount}" /></b>
@@ -173,7 +180,7 @@
   <div id="confirmationTab" class="${CURRENT_SUBMODULE != 'step4' ? 'invisible' : ''}">
     <div class="container checkin-panel-booking">
       <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-12 hidden-print">
           <h4>Transaction Summary</h4>
         </div>        
       </div>    
@@ -230,19 +237,39 @@
             <br>
             Night(s) = ${reservationSubmitted.numOfNights}
             <br>
+            <c:if test="${config.onlineBookingDiscount > 0}">
+              Room(s) Amount = &#8369; <fmt:formatNumber type="number" pattern="#,###.00" value="${reservationSubmitted.totalAmountRooms}" />
+              <br>
+              Online Discount = &#8369; (<fmt:formatNumber type="number" pattern="#,###.00" value="${reservationSubmitted.onlineBookingDiscount}" />)
+              <br>
+            </c:if>
             Total Amount = &#8369; <fmt:formatNumber type="number" pattern="#,###.00" value="${reservationSubmitted.totalAmount}" />
             <br>
-            VAT (${config.vatPercentage}%) = &#8369; <fmt:formatNumber type="number" pattern="#,###.00" value="${reservationSubmitted.vatAmount}" />
+            VAT (${config.vatPercentage}%) inclusive = &#8369; <fmt:formatNumber type="number" pattern="#,###.00" value="${reservationSubmitted.vatAmount}" />
             <br>
             <hr>
             Reservation (${config.downPaymentPercentage}%) = <b>&#8369; <fmt:formatNumber type="number" pattern="#,###.00" value="${reservationSubmitted.dpAmount}" /></b>
           </span>
         </div>
       </div>
+      <c:if test="${reservationSubmitted.status == 'PENDING'}">
+        <hr>
+        <div class="container mar-b-20">
+          <span>
+            <strong>Important Instructions</strong>
+            <br>
+            &nbsp;1. Bank details for deposit transaction has been sent to your email, kindly check your email
+            <br>
+            &nbsp;2. Please deposit the exact amount <b>&#8369; <fmt:formatNumber type="number" pattern="#,###.00" value="${reservationSubmitted.dpAmount}" /></b> within <b>${config.gracePeriodBankDepositHours} hours</b>
+            <br>
+            &nbsp;3. Send email to <b>${config.emailBankDeposit}</b> with subject <b>${reservationSubmitted.referenceId}</b> and <u>attach your DEPOSIT SLIP</u>
+          </span>
+        </div>
+      </c:if>      
     </div>
     <div class="col-md-12" style="margin-bottom:80px;">
       <button class="btn btn-primary pull-right mar-l-10 mar-t-20 hidden-print" style="margin-right:-15px;" id="btnPrintBooking">Print Confirmation <i class="fa fa-print" aria-hidden="true"></i></button>
-      <a href="/" class="btn btn-primary pull-right mar-t-20 mar-r-10">Back to Home <i class="fa fa-undo" aria-hidden="true"></i></a>
+      <a href="/" class="btn btn-primary pull-right mar-t-20 mar-r-10 btnBackHome">Back to Home <i class="fa fa-undo" aria-hidden="true"></i></a>
     </div>
   </div>
   

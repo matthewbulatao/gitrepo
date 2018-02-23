@@ -8,8 +8,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
-import javax.mail.MessagingException;
-import javax.mail.internet.AddressException;
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
 import org.apache.commons.logging.Log;
@@ -17,10 +16,14 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import localservice.models.AdditionalCharge;
+import localservice.models.ApplicationProperties;
 import localservice.models.BookingStatus;
+import localservice.models.Consts;
 import localservice.models.Reservation;
 import localservice.models.Room;
 import localservice.repositories.ReservationRepository;
+import localservice.restcontrollers.RoomRestController;
 
 @Service
 @Transactional
@@ -33,6 +36,8 @@ public class ReservationService extends BaseService<Reservation>{
 	private ApplicationPropertiesService applicationPropertiesService;
 	@Autowired
 	private MailService mailService;
+	@Autowired
+	private RoomRestController roomRestController;
 
 	public ReservationService(ReservationRepository reservationRepository) {
 		super(reservationRepository);
@@ -67,13 +72,35 @@ public class ReservationService extends BaseService<Reservation>{
 		return nights;
 	}
 	
-	public double computeBooking(Reservation reservation) {
+	public double computeRoomsAmount(Reservation reservation) {
 		double result = 0.0;
 		int nights = getNumOfNights(reservation);
 		for(Room room : reservation.getRooms()) {
 			result += room.getRate() * nights;
-		}
+		}		
 		return result;
+	}
+	
+	public void recomputeTotalAmountAfterAdd(Reservation reservation, double amount) {
+		double originalTotal = reservation.getTotalAmount();
+		double newTotal = originalTotal + amount;
+		reservation.setVatAmount(this.getVatAmount(newTotal));
+		reservation.setTotalAmount(newTotal);
+	}
+	
+	public void recomputeTotalAmountAfterRemove(Reservation reservation, double amount) {
+		double originalTotal = reservation.getTotalAmount();
+		double newTotal = originalTotal - amount;		
+		reservation.setVatAmount(this.getVatAmount(newTotal));
+		reservation.setTotalAmount(newTotal);
+	}
+	
+	public double applyOnlineDiscount(double rawAmount) {
+		ApplicationProperties config = applicationPropertiesService.findLatestConfig();
+		if(config.getOnlineBookingDiscount() > 0) {
+			return rawAmount - config.getOnlineBookingDiscount();
+		}
+		return rawAmount;
 	}
 	
 	public List<Reservation> findAllReservationsToday(){
@@ -124,15 +151,15 @@ public class ReservationService extends BaseService<Reservation>{
 	}
 	
 	public double computeBalanceForCheckout(Reservation reservation) {
-		return reservation.getTotalAmount() - reservation.getDpAmount(); //add here additional charges (amenities, extras)
+		return reservation.getTotalAmount() - reservation.getDpAmount();
 	}
 	
 	public void sendReservationEmail(Reservation reservation) {
+		ApplicationProperties config = applicationPropertiesService.findLatestConfig();
 		try {
 			SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
 			StringBuilder sb = new StringBuilder();
-			sb.append("Dear Customer,<br><br>");
-			sb.append("Thank you for booking at CASA ELUM Pavilion & Resort<br><br>");
+			sb.append("<b>Thank you for booking at CASA ELUM Pavilion & Resort</b><br><br>");
 			sb.append("Check-In: " + sdf.format(reservation.getCheckIn()) + "<br>");
 			sb.append("Check-Out: " + sdf.format(reservation.getCheckOut()) + "<br>");
 			sb.append("Main Guest: " + reservation.getMainGuest().getFullName() + "<br>");
@@ -146,17 +173,28 @@ public class ReservationService extends BaseService<Reservation>{
 				sb.append(room.getName());				
 			}
 			sb.append("<hr>");
-			sb.append("Booking Reference: " + reservation.getReferenceId() + "<br>");
-			sb.append("Status: " + reservation.getStatus() + "<br>");
-			sb.append("Total Amount: " + reservation.getTotalAmount() + "<br>");
-			sb.append("Down payment ("+ applicationPropertiesService.findLatestConfig().getDownPaymentPercentage() +"%): " + reservation.getDpAmount() + "<br><br>");
+			sb.append("Booking Reference: <b>" + reservation.getReferenceId() + "</b><br>");
+			sb.append("Status: <b><font color='"
+					+(reservation.getStatus().equalsIgnoreCase(BookingStatus.CONFIRMED.toString()) ? "green" : "red") 
+					+"'>" + reservation.getStatus() + "</font></b><br>");
+			sb.append("Payment Method: " + reservation.getPaymentMethod() + "<br>");
+			if(reservation.getOnlineBookingDiscount() > 0) {
+				sb.append("Room(s) Amount: &#8369; " + reservation.getTotalAmountRooms() + "<br>");
+				sb.append("Online Discount: &#8369; (" + reservation.getOnlineBookingDiscount() + ")<br>");
+			}
+			sb.append("Total Amount: &#8369; " + reservation.getTotalAmount() + "<br>");
+			sb.append("VAT ("+ config.getVatPercentage() +"%) inclusive: &#8369; " + reservation.getVatAmount() + "<br>");
+			sb.append("Down payment ("+ config.getDownPaymentPercentage() +"%): <b>&#8369; " + reservation.getDpAmount() + "</b><br><br>");
 			
 			if(reservation.getStatus().equalsIgnoreCase(BookingStatus.PENDING.toString())) {
 				sb.append("<hr>");
-				sb.append("Please deposit the down payment within (48 hours)<br>");
-				sb.append("Bank: Banco De Oro (BDO)<br>");
-				sb.append("Savings Account: Casa Elum Pavilion and Resort<br>");
-				sb.append("Account Number: 001-92340-236");
+				sb.append("Deposit <b>&#8369; "+reservation.getDpAmount()+"</b> within (<b>"+config.getGracePeriodBankDepositHours()+" hours</b>)<br>");
+				sb.append("Bank: <b>"+config.getBank()+"</b><br>");
+				sb.append("Account Name: <b>"+config.getMerchant()+"</b><br>");
+				sb.append("Account Number: <b>"+config.getAccount()+"</b>");
+				sb.append("<hr>");
+				sb.append("<b>IMPORTANT</b><br>");
+				sb.append("Send and attach your <b>DEPOSIT SLIP</b> by email to <b>"+config.getEmailBankDeposit()+"</b> with subject <b>"+reservation.getReferenceId()+"</b>");
 			}			
 			this.mailService.sendEmail(reservation.getMainGuest().getEmail(), null, "[TEST] Casa Elum Booking ["+ reservation.getReferenceId() +"]", sb.toString());
 		} catch (Exception e) {
@@ -164,12 +202,12 @@ public class ReservationService extends BaseService<Reservation>{
 		}
 	}
 	
-	public void sendCheckoutEmail(Reservation reservation) {
+	public void sendCheckoutEmail(Reservation reservation, List<AdditionalCharge> itemsForDisplay) {
+		ApplicationProperties config = applicationPropertiesService.findLatestConfig();
 		try {
 			SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
 			StringBuilder sb = new StringBuilder();
-			sb.append("Dear Customer,<br><br>");
-			sb.append("Thank you for staying with us at CASA ELUM Pavilion & Resort<br><br>");
+			sb.append("<b>Thank you for staying with us at CASA ELUM Pavilion & Resort</b><br><br>");
 			sb.append("Check-In: " + sdf.format(reservation.getCheckIn()) + "<br>");
 			sb.append("Check-Out: " + sdf.format(reservation.getCheckOut()) + "<br>");
 			sb.append("Main Guest: " + reservation.getMainGuest().getFullName() + "<br>");
@@ -183,14 +221,34 @@ public class ReservationService extends BaseService<Reservation>{
 				sb.append(room.getName());				
 			}
 			sb.append("<hr>");
-			sb.append("Booking Reference: " + reservation.getReferenceId() + "<br>");
+			sb.append("Booking Reference: <b>" + reservation.getReferenceId() + "</b><br>");
 			sb.append("Status: " + reservation.getStatus() + "<br>");
-			sb.append("Total Amount: " + reservation.getTotalAmount() + "<br>");
-			sb.append("(Less) Down payment ("+ applicationPropertiesService.findLatestConfig().getDownPaymentPercentage() +"%): " + reservation.getDpAmount() + "<br>");
-			sb.append("Balance upon checkout: " + reservation.getBalanceUponCheckout());
+			sb.append("<hr>");
+			sb.append("<b>Breakdown</b>");
+			sb.append("<table>");
+			for(AdditionalCharge charge : itemsForDisplay) {
+				sb.append("<tr>");
+				sb.append("<td>"+charge.getItemDescription()+"</td>");
+				sb.append("<td>&#8369; "+charge.getRate()+"</td>");
+				sb.append("</tr>");
+			}
+			sb.append("</table>");
+			sb.append("<hr>");
+			sb.append("Total Amount: &#8369; " + reservation.getTotalAmount() + "<br>");
+			sb.append("VAT ("+ config.getVatPercentage() +"%) inclusive: &#8369; " + reservation.getVatAmount() + "<br>");
+			sb.append("(Less) Down payment ("+ config.getDownPaymentPercentage() +"%): &#8369; " + reservation.getDpAmount() + "<br>");
+			sb.append("Balance Paid: <b>&#8369; " + reservation.getBalanceUponCheckout()+"</b>");
 			this.mailService.sendEmail(reservation.getMainGuest().getEmail(), null, "[TEST] Casa Elum Checkout ["+ reservation.getReferenceId() +"]", sb.toString());
 		} catch (Exception e) {
 			logger.error(e);		
+		}
+	}
+	
+	public void removeRoomsFromStaging(Reservation reservation, HttpServletRequest request) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		for(Room room : reservation.getRooms()) {
+			String key = room.getId() + Consts.SEPARATOR + sdf.format(reservation.getCheckIn()) + Consts.SEPARATOR + sdf.format(reservation.getCheckOut());
+			roomRestController.releaseRoom(key, request);
 		}
 	}
 }

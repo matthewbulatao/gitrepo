@@ -24,7 +24,50 @@ public class ApplicationProperties implements Serializable {
 	private int vatPercentage;
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date changeDate;
+	private double onlineBookingDiscount;
+	private int tempReserveMinutes;
+	private int gracePeriodBankDepositHours;
+	private String emailBankDeposit;
+	private String bank;
+	private String account;
+	private String merchant;	
 	
+	public String getBank() {
+		return bank;
+	}
+	public void setBank(String bank) {
+		this.bank = bank;
+	}	
+	public String getAccount() {
+		return account;
+	}
+	public void setAccount(String account) {
+		this.account = account;
+	}
+	public String getMerchant() {
+		return merchant;
+	}
+	public void setMerchant(String merchant) {
+		this.merchant = merchant;
+	}
+	public String getEmailBankDeposit() {
+		return emailBankDeposit;
+	}
+	public void setEmailBankDeposit(String emailBankDeposit) {
+		this.emailBankDeposit = emailBankDeposit;
+	}
+	public int getGracePeriodBankDepositHours() {
+		return gracePeriodBankDepositHours;
+	}
+	public void setGracePeriodBankDepositHours(int gracePeriodBankDepositHours) {
+		this.gracePeriodBankDepositHours = gracePeriodBankDepositHours;
+	}
+	public int getTempReserveMinutes() {
+		return tempReserveMinutes;
+	}
+	public void setTempReserveMinutes(int tempReserveMinutes) {
+		this.tempReserveMinutes = tempReserveMinutes;
+	}
 	public int getMaxAdultPerBooking() {
 		return maxAdultPerBooking;
 	}
@@ -72,6 +115,12 @@ public class ApplicationProperties implements Serializable {
 	}
 	public void setVatPercentage(int vatPercentage) {
 		this.vatPercentage = vatPercentage;
+	}	
+	public double getOnlineBookingDiscount() {
+		return onlineBookingDiscount;
+	}
+	public void setOnlineBookingDiscount(double onlineBookingDiscount) {
+		this.onlineBookingDiscount = onlineBookingDiscount;
 	}
 	@Override
 	public String toString() {

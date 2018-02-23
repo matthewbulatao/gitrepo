@@ -1,7 +1,12 @@
 <%@include file="header.jsp" %>
 
     <header class="masthead">
-      <div class="overlay">        
+      <div class="overlay">   
+        <c:if test="${config.onlineBookingDiscount > 0}">
+          <div class="container">
+            <a href="#" class="btn btn-default booking-tab-active pull-left disabled" style="background-color:#faffb0;margin-top:-70px;font-size:14pt;">Enjoy <b>&#8369; <fmt:formatNumber type="number" pattern="#,###" value="${config.onlineBookingDiscount}" /> off</b> when you book online!</a>
+          </div>
+        </c:if>
         <div class="container">
           <h1 class="display-1 text-white">Casa Elum</h1>
           <h2 class="display-4 text-white">Pavilion & Resort</h2>

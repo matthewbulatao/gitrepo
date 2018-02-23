@@ -20,7 +20,14 @@ public class AdditionalCharge implements Serializable {
 	@Transient
 	private String referenceId;
 	
+	public AdditionalCharge() {}	
 	
+	public AdditionalCharge(String itemDescription, double rate) {
+		super();
+		this.itemDescription = itemDescription;
+		this.rate = rate;
+	}
+
 	public String getReferenceId() {
 		return referenceId;
 	}

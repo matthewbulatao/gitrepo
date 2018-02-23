@@ -1,4 +1,4 @@
-function showMessage(_type,_message){
+function showMessage(_type,_message,_showProgressbar=false){
 	$.notify(_message, {
 		type: _type,
 		placement: {
@@ -6,7 +6,8 @@ function showMessage(_type,_message){
 		},
 		offset: {
 			y: 60
-		}
+		},
+		showProgressbar: _showProgressbar
 	});
 }
 
@@ -118,7 +119,7 @@ $(document).ready(function() {
     		return false;
     	}
     });   
-    $('.btnProceedToPayment').click(function(){
+    $('#btnProceedToPersonal').click(function(){
     	if($('input[name=selectedRoomIds]:checked').length == 0){
     		showMessage('danger','<strong>Sorry</strong>, please select atleast 1 room');
     		return false;
@@ -179,11 +180,12 @@ $(document).ready(function() {
     $('#btnPrintBooking').click(function(){
     	$('#stepsPanel').hide();
     	$(this).hide();
-    	
+    	$('.btnBackHome').hide();
     	window.print();
     	
     	$('#stepsPanel').show();
     	$(this).show();
+    	$('.btnBackHome').show();
     });
     $('#btnPrintReservations').click(function(){
     	$(this).hide(); 
@@ -244,17 +246,50 @@ $(document).ready(function() {
         	$('input[name=rate]').val($(this).val().split('-SEPARATOR-')[1]);    		
     	}    	
     });
-    $('input#itemDescriptionCustom').change(function(){
+    $('input#itemDescriptionCustom').keyup(function(){
     	if($(this).val() != ''){
     		$('#itemDescriptionAmenities').val('');
     		$('input[name=itemDescription]').val($(this).val());
         	$('input[name=rate]').val('');
     	}    	
     });
+    $('input#rateCharge').keyup(function(){
+    	if($(this).val() < 0){
+    		$('#chargeOperation').text('Discount');
+    	}else{
+    		$('#chargeOperation').text('Charge');
+    	}    	
+    });
     $('#btnAddCharge').click(function(){
     	if($('input[name=itemDescription]').val()==''){
-    		showMessage('danger','<strong>Sorry</strong>, please choose an amenity or put custom description for the additional charges');
+    		showMessage('danger','<strong>Sorry</strong>, please choose an amenity or put custom description for the additional charges or discounts');
     		return false;
+    	}
+    });
+    $('.select-room-checkbox').change(function(){
+    	var chkBox = $(this);
+    	var key = chkBox.val()+'-SEPARATOR-'+$('#checkInDraft').val()+'-SEPARATOR-'+$('#checkOutDraft').val(); 
+    	var id = chkBox.attr('id');
+    	if(this.checked){
+    		$.ajax({
+				url: "api/rooms/temporarily-reserve-room?key="+key, 
+				success: function(result){
+					if(result === 'ALREADY_RESERVED'){
+						showMessage('danger','<strong>Sorry</strong>, this room is already booked at this moment<br>Refreshing rooms list...',true);
+	    	        	$('#'+id).prop('checked',false);
+	    	        	setTimeout(function(){ 
+	    	        		window.location = 'booking-step1';
+	    	        	}, 5000);	    	        	
+					}else if(result !== 'OK'){
+	    	        	showMessage('danger','<strong>Sorry</strong>, this room is temporarily blocked for booking, '+result);
+	    	        	$('#'+id).prop('checked',false);
+	    	        }
+				}
+    		});
+    	}else{
+    		$.ajax({
+				url: "api/rooms/release-temporarily-reserve-room?key="+key
+	    	});
     	}
     });
 });

@@ -109,10 +109,10 @@
                   <td>
                     <div class="text-center row">
                       <a href="admin-rooms-edit?code=${room.code}" class="pad-r-10" title="Edit"><i class="fa fa-pencil" aria-hidden="true"></i></a>
-                      <form action="admin-rooms-delete" method="POST">
+                      <%-- <form action="admin-rooms-delete" method="POST">
                         <input type="hidden" name="code" value="${room.code}" />
                         <a href="#" title="Delete" class="delete-icon"><i class="fa fa-trash" aria-hidden="true"></i></a>
-                      </form>                      
+                      </form> --%>                      
                     </div>                    
                   </td>               
                 </tr>

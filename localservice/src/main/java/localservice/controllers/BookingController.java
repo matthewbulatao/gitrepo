@@ -4,6 +4,7 @@ package localservice.controllers;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,11 +19,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import localservice.models.ApplicationProperties;
 import localservice.models.BookingStatus;
 import localservice.models.Consts;
 import localservice.models.Guest;
 import localservice.models.Reservation;
 import localservice.models.Room;
+import localservice.restcontrollers.RoomRestController;
 import localservice.services.ApplicationPropertiesService;
 import localservice.services.GuestService;
 import localservice.services.ReservationService;
@@ -32,34 +35,35 @@ import localservice.services.RoomService;
 public class BookingController extends BaseController {
 	
 	@Autowired
-	private RoomService roomService;
-	
+	private RoomService roomService;	
 	@Autowired
-	private GuestService guestService;
-	
+	private GuestService guestService;	
 	@Autowired
-	private ReservationService reservationService;
-	
+	private ReservationService reservationService;	
 	@Autowired
 	private ApplicationPropertiesService applicationPropertiesService;
+	@Autowired
+	private RoomRestController roomRestController;
 	
 	//BACK TO SELECT ROOMS
 	@GetMapping("/booking-step1")
 	public String bookingStep1Back(HttpServletRequest request) {
 		setModuleInSession(request, "booking", "step1");
 		Object resObj = request.getSession().getAttribute("reservationDraft");
+		roomRestController.releaseRoomsWithSessionId(request.getSession().getId());
 		if(null != resObj) {
 			Reservation reservationForm = (Reservation) resObj;
 			loadAvailableRoomList(request, reservationForm);
 			return "booking";
 		}else {
-			return "redirect:index";
+			return "redirect:";
 		}		
 	}
 
 	//AFTER SELECT DATES
 	@PostMapping("/booking-step1")
 	public String bookingStep1(@ModelAttribute Reservation reservationForm, BindingResult bindingResult, HttpServletRequest request) {
+		roomRestController.releaseRoomsWithSessionId(request.getSession().getId());
 		setModuleInSession(request, "booking", "step1");
 		request.getSession().setAttribute("reservationDraft", reservationForm);
 		loadAvailableRoomList(request, reservationForm);
@@ -74,7 +78,7 @@ public class BookingController extends BaseController {
 		if(null != resObj) {
 			return "booking";
 		}else {
-			return "redirect:index";
+			return "redirect:";
 		}		
 	}
 	
@@ -86,15 +90,21 @@ public class BookingController extends BaseController {
 		List<Room> selectedRooms = roomService.findByIds(Arrays.asList(reservationForm.getSelectedRoomIds()).stream().map(Integer::parseInt).collect(Collectors.toList()));
 		request.getSession().setAttribute("selectedRoomIds", reservationForm.getSelectedRoomIds());
 		reservationDraft.setRooms(selectedRooms);
-		double totalAmount = reservationService.computeBooking(reservationDraft);
+		double totalAmountRooms = reservationService.computeRoomsAmount(reservationDraft);
+		double totalAmount = reservationService.applyOnlineDiscount(totalAmountRooms);
+		reservationDraft.setTotalAmountRooms(totalAmountRooms);
 		reservationDraft.setTotalAmount(totalAmount);
+		ApplicationProperties config = applicationPropertiesService.findLatestConfig(); 
+		if(config.getOnlineBookingDiscount() > 0.0) {
+			reservationDraft.setOnlineBookingDiscount(config.getOnlineBookingDiscount());
+		}
 		reservationDraft.setSumOfRoomRate(reservationService.getSumOfRoomRate(selectedRooms));	
 		reservationDraft.setNumOfNights(reservationService.getNumOfNights(reservationDraft));
 		reservationDraft.setDpAmount(reservationService.getDownPaymentAmount(totalAmount));
 		reservationDraft.setVatAmount(reservationService.getVatAmount(totalAmount));
 		
 		request.getSession().setAttribute("reservationDraft", reservationDraft);
-		request.setAttribute("config", applicationPropertiesService.findLatestConfig());
+		request.setAttribute("config", config);
 		return "booking";
 	}
 	
@@ -124,8 +134,10 @@ public class BookingController extends BaseController {
 		}else if(StringUtils.equalsIgnoreCase(Consts.PAYMENT_METHOD_PAYPAL, reservationForm.getPaymentMethod())) {
 			reservationDraft.setStatus(BookingStatus.CONFIRMED.toString());
 		}		
-		Reservation reservationSubmitted = reservationService.saveOrUpdate(reservationDraft);
+		reservationDraft.setBookingDate(new Date());
+		Reservation reservationSubmitted = reservationService.saveOrUpdate(reservationDraft);		
 		reservationService.sendReservationEmail(reservationSubmitted);
+		reservationService.removeRoomsFromStaging(reservationSubmitted, request);
 		request.setAttribute("reservationSubmitted", reservationSubmitted);
 		request.getSession().removeAttribute("reservationDraft");
 		request.getSession().removeAttribute("selectedRoomIds");

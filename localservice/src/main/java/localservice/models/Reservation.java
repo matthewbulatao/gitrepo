@@ -47,6 +47,12 @@ public class Reservation implements Serializable {
 	private int numOfNights;	
 	private double vatAmount;
 	private String email;
+	private double onlineBookingDiscount;
+	private double totalAmountRooms;
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date realCheckOut;
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date bookingDate;
 	
 	@Transient
 	private String[] selectedRoomIds;
@@ -59,9 +65,32 @@ public class Reservation implements Serializable {
 	@Transient
 	private String lastName;
 	@Transient
-	private String contactNumber;	
+	private String contactNumber;
 	
-	
+	public Date getBookingDate() {
+		return bookingDate;
+	}
+	public void setBookingDate(Date bookingDate) {
+		this.bookingDate = bookingDate;
+	}
+	public Date getRealCheckOut() {
+		return realCheckOut;
+	}
+	public void setRealCheckOut(Date realCheckOut) {
+		this.realCheckOut = realCheckOut;
+	}
+	public double getTotalAmountRooms() {
+		return totalAmountRooms;
+	}
+	public void setTotalAmountRooms(double totalAmountRooms) {
+		this.totalAmountRooms = totalAmountRooms;
+	}
+	public double getOnlineBookingDiscount() {
+		return onlineBookingDiscount;
+	}
+	public void setOnlineBookingDiscount(double onlineBookingDiscount) {
+		this.onlineBookingDiscount = onlineBookingDiscount;
+	}
 	public double getSumOfRoomRate() {
 		return sumOfRoomRate;
 	}

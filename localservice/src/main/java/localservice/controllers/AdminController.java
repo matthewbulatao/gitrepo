@@ -2,11 +2,13 @@ package localservice.controllers;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -84,6 +86,7 @@ public class AdminController extends BaseController {
 			savedBooking.setAdditionalCharges(new ArrayList<>());
 		}
 		savedBooking.getAdditionalCharges().add(addChargeForm);
+		reservationService.recomputeTotalAmountAfterAdd(savedBooking, addChargeForm.getRate());
 		reservationService.saveOrUpdate(savedBooking);
 		return "redirect:admin-manage-booking-retrieve?referenceId="+addChargeForm.getReferenceId();
 	}
@@ -93,27 +96,19 @@ public class AdminController extends BaseController {
 		Reservation savedBooking = reservationService.findOneByReferenceId(addChargeForm.getReferenceId());
 		if(null != savedBooking.getAdditionalCharges()) {
 			List<AdditionalCharge> existingCharges = savedBooking.getAdditionalCharges();
+			double amountToLess = 0.0;
 			for(AdditionalCharge charge : existingCharges) {
 				if(charge.getId() == addChargeForm.getId()) {
+					amountToLess = charge.getRate();
 					existingCharges.remove(charge);
 					break;
 				}
 			}
+			reservationService.recomputeTotalAmountAfterRemove(savedBooking, amountToLess);
 			reservationService.saveOrUpdate(savedBooking);
 		}		
 		return "redirect:admin-manage-booking-retrieve?referenceId="+addChargeForm.getReferenceId();
 	}
-	
-//	@PostMapping("/admin-manage-booking-save")
-//	public String adminManageBookingSave(@ModelAttribute Reservation reservationForm, BindingResult bindingResult, HttpServletRequest request) {
-//		Reservation reservation = reservationService.findOneByReferenceId(reservationForm.getReferenceId().trim());
-//		List<Miscellaneous> amenities = miscellaneousService.findByIds(Arrays.asList(reservationForm.getSelectedAmenitiesIds()).stream().map(Integer::parseInt).collect(Collectors.toList()));
-//		reservation.setAmenities(amenities);
-//		reservation.setExtraChargeDescription(reservationForm.getExtraChargeDescription());
-//		reservation.setExtraChargeAmount(reservationForm.getExtraChargeAmount());
-//		reservationService.saveOrUpdate(reservation);
-//		return "redirect:admin-manage-booking";
-//	}
 	
 	@PostMapping("/admin-manage-booking-checkout")
 	public String adminManageBookingCheckout(@ModelAttribute Reservation reservationForm, BindingResult bindingResult, HttpServletRequest request) {
@@ -121,10 +116,47 @@ public class AdminController extends BaseController {
 		reservation.setStatus(BookingStatus.CHECKED_OUT.toString());
 		double balanceAmount = reservationService.computeBalanceForCheckout(reservation);
 		reservation.setBalanceUponCheckout(balanceAmount);
+		reservation.setRealCheckOut(new Date());
 		reservationService.saveOrUpdate(reservation);
+		
+		List<AdditionalCharge> itemsForDisplay = new ArrayList<>();
+		itemsForDisplay.add(new AdditionalCharge("Booked Room(s) Original amount", reservation.getTotalAmountRooms()));
+		if(reservation.getOnlineBookingDiscount() > 0) {
+			double discountForDisplay = reservation.getOnlineBookingDiscount() - (reservation.getOnlineBookingDiscount() * 2);
+			itemsForDisplay.add(new AdditionalCharge("Online Booking Discount", discountForDisplay));
+		}
+		if(CollectionUtils.isNotEmpty(reservation.getAdditionalCharges())) {
+			for(AdditionalCharge charge : reservation.getAdditionalCharges()) {
+				itemsForDisplay.add(charge);
+			}
+		}
+		request.setAttribute("itemsForDisplay", itemsForDisplay);
 		request.setAttribute("balanceAmount", balanceAmount);
-		request.setAttribute("reservationCheckedOut", reservation);
-		reservationService.sendCheckoutEmail(reservation);
+		request.setAttribute("reservationToDisplay", reservation);
+		reservationService.sendCheckoutEmail(reservation, itemsForDisplay);
+		return "checkout-success";
+	}
+	
+	@GetMapping("/admin-manage-booking-summary")
+	public String adminManageBookingSummary(@RequestParam String referenceId, HttpServletRequest request) {
+		Reservation reservation = reservationService.findOneByReferenceId(referenceId.trim());
+		double balanceAmount = reservationService.computeBalanceForCheckout(reservation);
+		reservation.setBalanceUponCheckout(balanceAmount);
+		
+		List<AdditionalCharge> itemsForDisplay = new ArrayList<>();
+		itemsForDisplay.add(new AdditionalCharge("Booked Room(s) Original amount", reservation.getTotalAmountRooms()));
+		if(reservation.getOnlineBookingDiscount() > 0) {
+			double discountForDisplay = reservation.getOnlineBookingDiscount() - (reservation.getOnlineBookingDiscount() * 2);
+			itemsForDisplay.add(new AdditionalCharge("Online Booking Discount", discountForDisplay));
+		}
+		if(CollectionUtils.isNotEmpty(reservation.getAdditionalCharges())) {
+			for(AdditionalCharge charge : reservation.getAdditionalCharges()) {
+				itemsForDisplay.add(charge);
+			}
+		}
+		request.setAttribute("itemsForDisplay", itemsForDisplay);
+		request.setAttribute("balanceAmount", balanceAmount);
+		request.setAttribute("reservationToDisplay", reservation);		
 		return "checkout-success";
 	}
 	
@@ -254,7 +286,12 @@ public class AdminController extends BaseController {
 	@PostMapping("/admin-reservations-save")
 	public String adminReservationsSave(@ModelAttribute Reservation reservationForm, BindingResult bindingResult, HttpServletRequest request) {
 		Reservation resToEdit = reservationService.findOneByReferenceId(reservationForm.getReferenceId());
-		resToEdit.setStatus(reservationForm.getStatus());		
+		String previousStatus = resToEdit.getStatus();
+		resToEdit.setStatus(reservationForm.getStatus());
+		if(StringUtils.equalsIgnoreCase(BookingStatus.PENDING.toString(), previousStatus)
+				&& StringUtils.equalsIgnoreCase(BookingStatus.CONFIRMED.toString(), reservationForm.getStatus())) {
+			reservationService.sendReservationEmail(resToEdit);
+		}
 		reservationService.saveOrUpdate(resToEdit);
 		request.setAttribute("reservationList", reservationService.findAll());
 		return "redirect:admin-reservations";

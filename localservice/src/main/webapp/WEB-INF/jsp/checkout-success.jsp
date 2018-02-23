@@ -2,71 +2,75 @@
 
 <div class="container mar-t-20">    
   <div>
-    <div class="container checkin-panel-booking">
+    <div class="container">
       <div class="row">
         <div class="col-md-12">
-          <h4>Checkout Summary</h4>
+          <c:set var="now" value="<%=new java.util.Date()%>" />
+          <h4>${reservationToDisplay.status == 'CHECKED_OUT' ? 'Checkout' : 'Booking'} Summary <small>as of <fmt:formatDate type="both" dateStyle="medium" timeStyle="medium" value="${reservationToDisplay.status == 'CHECKED_OUT' ? reservationToDisplay.realCheckOut : now}" /></small></h4>
         </div>        
       </div>    
-      <div class="row">
-        <div class="col-md-6 mar-t-20">
-          <div>
-            <span class="booking-summary-header">Schedule</span>
-            <table class="table table-responsive">
+      <div class="container mar-t-20">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Reference ID</th>
+              <th>Main Guest</th>
+              <th>Contact</th>
+              <th>Check In</th>
+              <th>Check Out</th>
+              <th>Total Pax</th>   
+              <th>Status</th>                     
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><a href="admin-manage-booking-retrieve?referenceId=${reservationToDisplay.referenceId}">${reservationToDisplay.referenceId}</td>
+              <td>${reservationToDisplay.mainGuest.lastName}, ${reservationToDisplay.mainGuest.firstName}</td>
+              <td>${reservationToDisplay.mainGuest.contactNumber}</td>
+              <td><fmt:formatDate type="date" value="${reservationToDisplay.checkIn}" /></td>
+              <td><fmt:formatDate type="date" value="${reservationToDisplay.checkOut}" /></td>
+              <td>Adult (${reservationToDisplay.countAdult}) <c:if test="${reservationToDisplay.countChildren > 0}">Child (${reservationToDisplay.countChildren})</c:if></td>
+              <td style="color:${reservationToDisplay.status == 'PENDING' || reservationToDisplay.status == 'REJECTED' ? 'red' : (reservationToDisplay.status == 'CONFIRMED' ? 'green' : '')};">${reservationToDisplay.status}</td>              
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+      <div class="container mar-t-50">
+        <h5>Breakdown</h5>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Item Description</th>
+              <th class="text-right">Rate</th>
+            </tr>
+          </thead>
+          <tbody>
+            <c:forEach var="addCharge" items="${itemsForDisplay}">
               <tr>
-                <td class="booking-summary-field">Check-in Date</td>
-                <td><fmt:formatDate type="date" dateStyle="long" timeStyle="long" value="${reservationCheckedOut.checkIn}" /></td>
+                <td>${addCharge.itemDescription}</td>
+                <td class="text-right">&#8369; <fmt:formatNumber type="number" pattern="#,###.00" value="${addCharge.rate}" /></td>                          
               </tr>
-              <tr>
-                <td class="booking-summary-field">Check-out Date</td>
-                <td><fmt:formatDate type="date" dateStyle="long" timeStyle="long" value="${reservationCheckedOut.checkOut}" /></td>
-              </tr>
-            </table>
-          </div>
-          <div class="mar-t-20">
-            <span class="booking-summary-header">Guests</span>
-            <table class="table table-responsive">
-              <tr>
-                <td class="booking-summary-field">Main Guest</td>
-                <td>${reservationCheckedOut.mainGuest.fullName}</td>
-              </tr>
-              <tr>
-                  <td class="booking-summary-field">Total Pax</td>
-                  <td>${reservationCheckedOut.countAdult} ${reservationCheckedOut.countAdult > 0 ? 'adults' : 'adult'}, ${reservationCheckedOut.countChildren} ${reservationCheckedOut.countChildren > 0 ? 'children' : 'child'}</td>
-              </tr>                  
-            </table>
-          </div>
-          <div class="mar-t-20">
-            <span class="booking-summary-header">Reserved Room(s)</span>
-            <table class="table table-responsive">
-              <c:forEach var="room" items="${reservationCheckedOut.rooms}">
-                <tr><td>${room.name}</td></tr> 
-              </c:forEach>                             
-            </table>
-          </div>
-        </div>
-        <div class="col-md-6 mar-t-20">
-          <span class="pull-right text-right">
-            Booking Reference
+            </c:forEach>
+          </tbody>
+        </table>
+        <hr>
+        <div class="text-right">
+          <span>
+            Total Amount = &#8369; <fmt:formatNumber type="number" pattern="#,###.00" value="${reservationToDisplay.totalAmount}" />
+            <br>                
+            VAT (${config.vatPercentage}%) inclusive = &#8369; <fmt:formatNumber type="number" pattern="#,###.00" value="${reservationToDisplay.vatAmount}" />
             <br>
-            <span id="bookingRefNumber">${reservationCheckedOut.referenceId}</span>
-            <br>
-            Status
-            <br>
-            <span id="bookingStatus">${reservationCheckedOut.status}</span>
-            <br>
-            Room(s) Charge = &#8369; <fmt:formatNumber type="number" pattern="#,###.00" value="${reservationCheckedOut.totalAmount}" />
-            <br>
-            (less) Reservation Fee = <b>&#8369; <fmt:formatNumber type="number" pattern="#,###.00" value="${reservationCheckedOut.dpAmount}" /></b>
+            Reservation (${config.downPaymentPercentage}%) = &#8369; (<fmt:formatNumber type="number" pattern="#,###.00" value="${reservationToDisplay.dpAmount}" />)
             <br>
             <hr>
-            Balance upon checkout = <b>&#8369; <fmt:formatNumber type="number" pattern="#,###.00" value="${balanceAmount}" /></b>
-          </span>
-        </div>
+            Balance = <b>&#8369; <fmt:formatNumber type="number" pattern="#,###.00" value="${reservationToDisplay.balanceUponCheckout}" /></b>
+          </span>        
+        <hr>
       </div>
     </div>
-    <div class="col-md-12" style="margin-bottom:80px;">
-      <button class="btn btn-primary pull-right mar-t-20 hidden-print" style="margin-right:-15px;" id="btnPrintBooking">Print Summary <i class="fa fa-print" aria-hidden="true"></i></button>
+    <div class="col-md-12 container" style="margin-bottom:80px;">
+      <button class="btn btn-primary pull-right mar-t-20 hidden-print" id="btnPrintBooking">Print Summary <i class="fa fa-print" aria-hidden="true"></i></button>
     </div>
   </div>
   

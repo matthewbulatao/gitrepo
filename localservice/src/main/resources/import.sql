@@ -1,4 +1,4 @@
-INSERT INTO APPLICATION_PROPERTIES(max_children_per_booking,max_adult_per_booking,entrance_fee_child,entrance_fee_adult,down_payment_percentage,vat_percentage) VALUES(10,10,100,300,50,20);
+INSERT INTO APPLICATION_PROPERTIES(max_children_per_booking,max_adult_per_booking,entrance_fee_child,entrance_fee_adult,down_payment_percentage,vat_percentage,online_booking_discount,temp_reserve_minutes,grace_period_bank_deposit_hours,email_bank_deposit,bank,account,merchant) VALUES(10,20,100,300,50,20,100,10,48,'casaelum.reservations@gmail.com','BDO (Any Branch)','00199999555','Casa Elum Pavilion and Resort');
 
 INSERT INTO ROLE(code,name) VALUES('ROLE_ADMIN','ADMIN');
 INSERT INTO ROLE(code,name) VALUES('ROLE_STAFF','STAFF');
