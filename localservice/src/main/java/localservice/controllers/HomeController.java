@@ -13,6 +13,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -49,6 +53,28 @@ public class HomeController extends BaseController {
 		setModuleInSession(request, StringUtils.EMPTY, null);
 		request.setAttribute("config", applicationPropertiesService.findLatestConfig());
 		request.setAttribute("dateToday", formatter.format(new Date()));	
+		
+		String userRoleToDisplay = "";
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (null != authentication && !(authentication instanceof AnonymousAuthenticationToken)) {
+			List<GrantedAuthority> roles =  (List<GrantedAuthority>) authentication.getAuthorities();
+			for(GrantedAuthority role : roles) {
+				if(StringUtils.contains(role.getAuthority(), "ADMIN")) {
+					userRoleToDisplay = "Admin";
+					break;
+				}
+			}
+			if(StringUtils.isEmpty(userRoleToDisplay)) {
+				for(GrantedAuthority role : roles) {
+					if(StringUtils.contains(role.getAuthority(), "STAFF")) {
+						userRoleToDisplay = "Staff";
+						break;
+					}
+				}
+			}
+		}
+		
+		request.getSession().setAttribute("userRoleToDisplay", userRoleToDisplay);
 		roomRestController.releaseRoomsWithSessionId(request.getSession().getId());
 		return "index";
 	}

@@ -9,6 +9,7 @@ public class Consts {
 	
 	public static final String PAYMENT_METHOD_PAYPAL = "PAYPAL";
 	public static final String PAYMENT_METHOD_BANK = "BANK_DEPOSIT";
+	public static final String PAYMENT_METHOD_WALKIN = "WALK_IN";
 	
 	public static final String RESPONSE_OK = "OK";
 	public static final String RESPONSE_KO = "KO";

@@ -1,5 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri ="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -26,6 +27,9 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
       <div class="container">
         <a class="navbar-brand hidden-print" href="/">Casa Elum</a>
+        <sec:authorize access="hasAnyRole('ADMIN','STAFF')">
+          <a href="#" class="nav-link disabled" disabled> | Logged in as ${userRoleToDisplay}</a>
+        </sec:authorize>        
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>

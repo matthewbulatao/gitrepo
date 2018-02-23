@@ -130,21 +130,29 @@
             <input type="hidden" id="renderPaypal" value="${renderPaypal}"/> 
             <div class="col-md-6">
               <div class="col-md-12 row mar-b-20">
-                <label class="radio-inline col-md-6"><input type="radio" id="rdoPayBank" name="paymentMethod" value="BANK_DEPOSIT"> Bank Deposit <i class="fa fa-university" aria-hidden="true"></i></label>
-                <label class="radio-inline col-md-6"><input type="radio" id="rdoPayPal" name="paymentMethod" value="PAYPAL" checked> Paypal <i class="fa fa-paypal" aria-hidden="true"></i></label>
+                <sec:authorize access="hasAnyRole('ADMIN','STAFF')">
+                  <label class="radio-inline col-md-4"><input type="radio" id="rdoPayWalk" name="paymentMethod" value="WALK_IN"> Walk-In <i class="fa fa-male" aria-hidden="true"></i></label>
+                </sec:authorize>
+                <label class="radio-inline col-md-4"><input type="radio" id="rdoPayBank" name="paymentMethod" value="BANK_DEPOSIT"> Bank Deposit <i class="fa fa-university" aria-hidden="true"></i></label>
+                <label class="radio-inline col-md-4"><input type="radio" id="rdoPayPal" name="paymentMethod" value="PAYPAL" checked> Paypal <i class="fa fa-paypal" aria-hidden="true"></i></label>
               </div>
               <hr>
               <div class="container">
-                <span><b>For Bank Deposit</b>: Bank details and instructions will be sent to you by email, 
-                your reservation will be on PENDING status until your payment is confirmed
-                <br>
-                <b>For PayPal</b>: Your reservation will be CONFIRMED upon successful payment transaction
+                <span>
+                  <sec:authorize access="hasAnyRole('ADMIN','STAFF')">
+                    <b>For Walk-In</b>: Customer reservation will be CONFIRMED automatically upon payment over-the-counter
+                    <br>
+                  </sec:authorize>
+                  <b>For Bank Deposit</b>: Bank details and instructions will be sent to you by email, 
+                  your reservation will be on PENDING status until your payment is confirmed
+                  <br>
+                  <b>For PayPal</b>: Your reservation will be CONFIRMED upon successful payment transaction
                 </span>
               </div>              
             </div>
             <input type="hidden" id="dpAmountForPaypal" value="${reservationDraft.dpAmount}"/>
             <div class="col-md-6">
-              <span class="pull-right text-right">
+              <span class="pull-right text-right" id="spanNonWalkin">
                 Room(s) Rate = &#8369; <fmt:formatNumber type="number" pattern="#,###.00" value="${reservationDraft.sumOfRoomRate}" />
                 <br>
                 x
@@ -164,6 +172,21 @@
                 <br>
                 <hr>
                 Reservation (${config.downPaymentPercentage}%) = <b>&#8369; <fmt:formatNumber type="number" pattern="#,###.00" value="${reservationDraft.dpAmount}" /></b>
+              </span>
+              <span class="pull-right text-right invisible" id="spanWalkin">
+                Room(s) Rate = &#8369; <fmt:formatNumber type="number" pattern="#,###.00" value="${reservationDraft.sumOfRoomRate}" />
+                <br>
+                x
+                <br>
+                Night(s) = ${reservationDraft.numOfNights}
+                <br>
+                <hr>
+                Room(s) Amount = &#8369; <fmt:formatNumber type="number" pattern="#,###.00" value="${reservationDraft.totalAmountRooms}" />
+                <br>                
+                VAT (${config.vatPercentage}%) inclusive = &#8369; <fmt:formatNumber type="number" pattern="#,###.00" value="${vatAmountWalkin}" />
+                <br>
+                <hr>
+                Reservation (${config.downPaymentPercentage}%) = <b>&#8369; <fmt:formatNumber type="number" pattern="#,###.00" value="${dpAmountWalkin}" /></b>
               </span>
             </div>
           </div>
@@ -237,7 +260,7 @@
             <br>
             Night(s) = ${reservationSubmitted.numOfNights}
             <br>
-            <c:if test="${config.onlineBookingDiscount > 0}">
+            <c:if test="${reservationSubmitted.onlineBookingDiscount > 0}">
               Room(s) Amount = &#8369; <fmt:formatNumber type="number" pattern="#,###.00" value="${reservationSubmitted.totalAmountRooms}" />
               <br>
               Online Discount = &#8369; (<fmt:formatNumber type="number" pattern="#,###.00" value="${reservationSubmitted.onlineBookingDiscount}" />)

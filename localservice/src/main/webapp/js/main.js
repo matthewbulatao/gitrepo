@@ -227,7 +227,9 @@ $(document).ready(function() {
     $('#rdoPayPal').change(function(){
     	if(this.checked){
     		$('#btnProceedConfirm').addClass('invisible');    
-    		$('#paypal-button').removeClass('invisible');    		
+    		$('#paypal-button').removeClass('invisible'); 
+    		$('#spanNonWalkin').removeClass('invisible'); 
+    		$('#spanWalkin').addClass('invisible'); 
     		renderPaypalButton();    		
     	}
     });
@@ -235,6 +237,16 @@ $(document).ready(function() {
     	if(this.checked){
     		$('#paypal-button').addClass('invisible');    		
     		$('#btnProceedConfirm').removeClass('invisible'); 
+    		$('#spanNonWalkin').removeClass('invisible'); 
+    		$('#spanWalkin').addClass('invisible'); 
+    	}
+    });
+    $('#rdoPayWalk').change(function(){
+    	if(this.checked){
+    		$('#paypal-button').addClass('invisible');    		
+    		$('#btnProceedConfirm').removeClass('invisible'); 
+    		$('#spanNonWalkin').addClass('invisible'); 
+    		$('#spanWalkin').removeClass('invisible'); 
     	}
     });
     if($('#renderPaypal').val()){

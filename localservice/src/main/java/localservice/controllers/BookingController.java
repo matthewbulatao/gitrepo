@@ -103,6 +103,8 @@ public class BookingController extends BaseController {
 		reservationDraft.setDpAmount(reservationService.getDownPaymentAmount(totalAmount));
 		reservationDraft.setVatAmount(reservationService.getVatAmount(totalAmount));
 		
+		request.getSession().setAttribute("vatAmountWalkin", reservationService.getVatAmount(totalAmountRooms));
+		request.getSession().setAttribute("dpAmountWalkin", reservationService.getDownPaymentAmount(totalAmountRooms));
 		request.getSession().setAttribute("reservationDraft", reservationDraft);
 		request.setAttribute("config", config);
 		return "booking";
@@ -133,7 +135,17 @@ public class BookingController extends BaseController {
 			reservationDraft.setStatus(BookingStatus.PENDING.toString());
 		}else if(StringUtils.equalsIgnoreCase(Consts.PAYMENT_METHOD_PAYPAL, reservationForm.getPaymentMethod())) {
 			reservationDraft.setStatus(BookingStatus.CONFIRMED.toString());
-		}		
+		}else if(StringUtils.equalsIgnoreCase(Consts.PAYMENT_METHOD_WALKIN, reservationForm.getPaymentMethod())){
+			reservationDraft.setStatus(BookingStatus.CONFIRMED.toString());
+			//Recompute if Walk-In (remove online discount)
+			double totalAmountRooms = reservationService.computeRoomsAmount(reservationDraft); 
+			double totalAmount = totalAmountRooms;
+			reservationDraft.setTotalAmountRooms(totalAmountRooms);
+			reservationDraft.setTotalAmount(totalAmount);
+			reservationDraft.setOnlineBookingDiscount(0);
+			reservationDraft.setDpAmount(reservationService.getDownPaymentAmount(totalAmount));
+			reservationDraft.setVatAmount(reservationService.getVatAmount(totalAmount));
+		}
 		reservationDraft.setBookingDate(new Date());
 		Reservation reservationSubmitted = reservationService.saveOrUpdate(reservationDraft);		
 		reservationService.sendReservationEmail(reservationSubmitted);
