@@ -1,3 +1,21 @@
+function initPhotoswipe(imgIndex, imgClass){
+	var pswpElement = document.querySelectorAll('.pswp')[0];
+	var items = [];
+	$('.'+imgClass).each(function(i,e){
+		items.push({
+			src: $(e).attr('src'),
+	        w: 1024,
+	        h: 600
+		});
+	});
+	var options = {
+	    bgOpacity: 0.8,
+	    index: imgIndex
+	};	
+	var gallery = new PhotoSwipe( pswpElement, PhotoSwipeUI_Default, items, options);
+	gallery.init();
+}
+
 function showMessage(_type,_message,_showProgressbar=false){
 	$.notify(_message, {
 		type: _type,
@@ -223,6 +241,9 @@ $(document).ready(function() {
 	}
 	if($('#operationSuccess').val()){
 		showMessage('success','<strong>Success</strong>, information successfully processed');
+	}
+	if($('#errorMessage').val()){
+		showMessage('danger','<strong>Error</strong>, '+$('#errorMessage').val());
 	}
     $('#rdoPayPal').change(function(){
     	if(this.checked){

@@ -65,7 +65,8 @@
                 <a href="#" data-toggle="dropdown"><i class="fa fa-user-circle"></i></a>
                 <ul class="dropdown-menu">
                    <li><a href="/logout" class="nav-link" style="color: #3f3f3f;">Sign out</a></li>
-                </ul>
+                   <li><a href="/change-pwd" class="nav-link" style="color: #3f3f3f;">Change password</a></li>
+                </ul>                
             </li>
             <%-- <li class="nav-item>
               <form action="logout" method="POST"><a class="nav-link" href="admin-config">Config</a></form>

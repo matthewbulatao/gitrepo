@@ -14,6 +14,8 @@
     <title>Casa Elum | Pavilion & Resort</title>
 
     <link href="../../vendor/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link href="../../vendor/photoswipe/photoswipe.css" rel="stylesheet">
+    <link href="../../vendor/photoswipe/default-skin/default-skin.css" rel="stylesheet">
 	<link href="../../css/one-page-wonder.css" rel="stylesheet">
 	<link href="../../css/bootstrap-datepicker3.css" rel="stylesheet">
     <link href="../../css/font-awesome/css/font-awesome.min.css" rel="stylesheet">

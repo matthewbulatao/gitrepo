@@ -28,6 +28,7 @@
     
     <div class="container text-center card mar-t-100 wid-70">
       <h2 class="mar-t-20 mar-b-20">You are successfully logged off</h2>
+      <center><h4><a href="/admin">Admin Home</a></h4></center>
     </div>
     
     <script src="../../vendor/jquery/jquery.min.js"></script>
